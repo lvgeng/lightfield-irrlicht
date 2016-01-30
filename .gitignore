@@ -17,6 +17,7 @@
 [Rr]eleases/
 ./x64/
 ./lightfield-irrlicht/x64/
+./pattern-irrlicht/pattern-irrlicht
 x86/
 build/
 bld/
