@@ -139,16 +139,18 @@ int main()
 		video::ITexture* renderTargetDepth = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(initialParametres->widthOfDisplayzoneByPixel, initialParametres->heightOfDisplayzoneByPixel), "DepthStencil", video::ECF_D24S8);
 		simulatorRenderTarget = videoDriver->addRenderTarget();
 		simulatorRenderTarget->setTexture(renderTargetTex, renderTargetDepth);
+
+		//Enable Stencil buffer and write in it. It's used as mask in this case. ======================================
+		glClearStencil(0);
+		// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		// glMatrixMode(GL_MODELVIEW);
+		// glLoadIdentity();
+		glEnable(GL_STENCIL_TEST);
+
 		while (device->run())
 		{
 			videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, SColor(0));
 			videoDriver->setRenderTargetEx(simulatorRenderTarget, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(0));
-			//Enable Stencil buffer and write in it. It's used as mask in this case. ======================================
-			glClearStencil(0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			glEnable(GL_STENCIL_TEST);
 
 			for (int xInSubimageByPixel = 0; xInSubimageByPixel < initialParametres->widthOfSubimageByPixel; xInSubimageByPixel++)
 			{
@@ -217,20 +219,21 @@ int main()
 				}
 			}
 			guiEnvironment->drawAll();
+
+			glEnable(GL_STENCIL_TEST);
 			videoDriver->endScene();
 		}
 	}
 	else
 	{
+		//Enable Stencil buffer and write in it. It's used as mask in this case. ======================================
+		glClearStencil(0);
+		glEnable(GL_STENCIL_TEST);
+		
 		while (device->run())
 		{
+			
 			videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, video::SColor(0));
-			//Enable Stencil buffer and write in it. It's used as mask in this case. ======================================
-			glClearStencil(0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			glEnable(GL_STENCIL_TEST);
 			for (int xInSubimageByPixel = 0; xInSubimageByPixel < initialParametres->widthOfSubimageByPixel; xInSubimageByPixel++)
 			{
 				for (int yInSubimageByPixel = 0; yInSubimageByPixel < initialParametres->heightOfSubimageByPixel; yInSubimageByPixel++)
@@ -264,7 +267,7 @@ int main()
 			guiEnvironment->drawAll();
 			videoDriver->endScene();
 		}
-	}	
+	}
 	//End by deleting the device.
 	device->drop();
 	return 0;

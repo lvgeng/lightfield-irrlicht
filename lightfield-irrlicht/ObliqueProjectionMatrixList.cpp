@@ -1,4 +1,5 @@
 #include "ObliqueProjectionMatrixList.h"
+#include <iostream>
 #include <math.h>
 
 ObliqueProjectionMatrixList::ObliqueProjectionMatrixList(double widthInScene, double heightInScene, int widthByPixel, int heightByPixel, double widthBymm, double heightBymm, double thicknessBymm, double refractionIndex)
@@ -31,12 +32,16 @@ ObliqueProjectionMatrixList::ObliqueProjectionMatrixList(double widthInScene, do
 			irr::f32 valueOfMatrixElement[16] = {
 				1,0,0,0,
 				0,1,0,0,
-				x / h,
-				y / h,
+				x / h / 2, //A serious mistake I made is the missing 2
+				y / h / 2,
 				1,0,
 				0,0,0,1 };
 			obliqueMatrix->setM(valueOfMatrixElement);
 			matrixList[i][j]->setbyproduct(*projectionMatrix, *obliqueMatrix); //Something need to be aware of is that irr::core::matrix4::setbyproduct(A,B) will return the result of BA, rather than AB.
+			// if (i%10==0&&j%10==0)
+			// {
+			// 	std::cout << "X=" << x << "\n" << "Y=" << y << "\n" << "h=" << h << "\n\n";
+			// }
 		}
 	}
 }

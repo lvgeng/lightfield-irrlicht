@@ -2,8 +2,8 @@
 
 InitialParametres::InitialParametres()
 {
-	widthOfDisplayzoneByPixel = 1200;
-	heightOfDisplayzoneByPixel = 640;
+	widthOfDisplayzoneByPixel = 800;
+	heightOfDisplayzoneByPixel = 600;
 
 
 	heightOfProjectionPanelInScene = 2;
@@ -14,8 +14,8 @@ InitialParametres::InitialParametres()
 	widthOfSubimageByPixel = 20;
 	heightOfSubimageByPixel = 20;
 
-	widthOfSubimageBymm = 20;
-	heightOfSubimageBymm = 20;
+	widthOfSubimageBymm = 40;
+	heightOfSubimageBymm = 40;
 	thicknessOfTransparentMaterialBetweenDevices = 20;
 
 	refractionIndexOfTransparentMaterial = 1.49; //The data comes from the data sheet is 1.49. Do not change it if unnecessary.
@@ -23,8 +23,9 @@ InitialParametres::InitialParametres()
 	xSubimageCountMax = widthOfDisplayzoneByPixel / widthOfSubimageByPixel;
 	ySubimageCountMax = heightOfDisplayzoneByPixel / heightOfSubimageByPixel;
 
+	isCubeSpinning = false;
 	isCubeSpinning = true;
-	//isSimulating = false;
+	isSimulating = false;
 	isSimulating = true;
 }
 
