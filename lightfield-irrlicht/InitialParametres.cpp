@@ -14,9 +14,9 @@ InitialParametres::InitialParametres()
 	widthOfSubimageByPixel = 20;
 	heightOfSubimageByPixel = 20;
 
-	widthOfSubimageBymm = 40;
-	heightOfSubimageBymm = 40;
-	thicknessOfTransparentMaterialBetweenDevices = 20;
+	widthOfSubimageBymm = 5.6;
+	heightOfSubimageBymm = 5.6;
+	thicknessOfTransparentMaterialBetweenDevices = 3;
 
 	refractionIndexOfTransparentMaterial = 1.49; //The data comes from the data sheet is 1.49. Do not change it if unnecessary.
 

@@ -32,8 +32,8 @@ ObliqueProjectionMatrixList::ObliqueProjectionMatrixList(double widthInScene, do
 			irr::f32 valueOfMatrixElement[16] = {
 				1,0,0,0,
 				0,1,0,0,
-				x / h / 2, //A serious mistake I made is the missing 2
-				y / h / 2,
+				x / h,
+				y / h,
 				1,0,
 				0,0,0,1 };
 			obliqueMatrix->setM(valueOfMatrixElement);

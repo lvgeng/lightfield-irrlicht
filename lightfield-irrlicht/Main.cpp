@@ -72,8 +72,8 @@ int main()
 	//Add a cube for the following test. Easier to figure out the problems while dealing with a simple model.
 	IMeshSceneNode* cubeForTest = sceneManager->addCubeSceneNode(1);
 	cubeForTest->setScale(vector3df(1, 1, 1));
-	cubeForTest->setRotation(vector3df(0, 0, 0));
-	cubeForTest->setPosition(vector3df(0,0,0.5));
+	cubeForTest->setRotation(vector3df(0, 30, 0));
+	cubeForTest->setPosition(vector3df(0,0,0.7));
 	cubeForTest->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 	if (initialParametres->isCubeSpinning)
 	{
@@ -261,6 +261,7 @@ int main()
 					glStencilFunc(GL_EQUAL, 0x1, 0x1);
 					glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 					currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
+					//currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(0,0), true);
 					sceneManager->drawAll();
 				}
 			}
