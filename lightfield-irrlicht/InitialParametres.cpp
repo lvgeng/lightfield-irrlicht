@@ -24,9 +24,9 @@ InitialParametres::InitialParametres()
 	ySubimageCountMax = heightOfDisplayzoneByPixel / heightOfSubimageByPixel;
 
 	isCubeSpinning = false;
-	isCubeSpinning = true;
+	//isCubeSpinning = true;
 	isSimulating = false;
-	isSimulating = true;
+	//isSimulating = true;
 }
 
 InitialParametres::~InitialParametres()
