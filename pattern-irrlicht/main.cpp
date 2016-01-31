@@ -41,12 +41,12 @@ int main(int argc, char* argv[])
 		if (argc == 3 && std::string(argv[1])=="t")
 		{
 			isTesting = true;
-			heightOfDisplayZone = atoi(argv[2]);
+			widthOfDisplayZone = atoi(argv[2]);
 		}
 		else if (argc == 2 && atoi(argv[1]) != 0)
 		{
 			isTesting = false;
-			heightOfDisplayZone = atoi(argv[1]);
+			widthOfDisplayZone = atoi(argv[1]);
 		}
 		else
 		{
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	
 
 	// Load the width and height.
-	widthOfDisplayZone = heightOfDisplayZone * 210 / 297;
+	heightOfDisplayZone = widthOfDisplayZone * 210 / 297;
 
 	if(isTesting)
 	{
@@ -77,19 +77,37 @@ int main(int argc, char* argv[])
 	}
 
 
-	SIrrlichtCreationParameters creationParameter;
-	creationParameter.DriverType = video::EDT_OPENGL;
-	creationParameter.WindowSize = dimension2d<u32>(widthOfDisplayZone, heightOfDisplayZone);
-	creationParameter.Bits = 32;
-	creationParameter.Fullscreen = false;
-	creationParameter.Stencilbuffer = true;
-	creationParameter.Vsync = true;
+	// SIrrlichtCreationParameters creationParameter;
+	// creationParameter.DriverType = video::EDT_OPENGL;
+	// creationParameter.WindowSize = dimension2d<u32>(widthOfDisplayZone, heightOfDisplayZone);
+	// creationParameter.Bits = 32;
+	// creationParameter.Fullscreen = false;
+	// creationParameter.Stencilbuffer = true;
+	// creationParameter.Vsync = true;
 
-	IrrlichtDevice *device = createDeviceEx(creationParameter);
-	if (!device)
-	{
-		return 1;
-	}
+	// IrrlichtDevice *device = createDeviceEx(creationParameter);
+	// if (!device)
+	// {
+	// 	return 1;
+	// }
+
+	// widthOfDisplayZone = 1920;
+	// heightOfDisplayZone = 1080;
+
+	
+	IrrlichtDevice *device =
+		createDevice(
+			video::EDT_OPENGL,				//- deviceType: Type of the device. This can currently be the Null-device,one of the two software renderers, D3D8, D3D9, or OpenGL.In this example we use EDT_SOFTWARE, but to try out, you might want to change it to EDT_BURNINGSVIDEO, EDT_NULL, EDT_DIRECT3D8, EDT_DIRECT3D9, or EDT_OPENGL.
+			//video::EDT_DIRECT3D9,
+			dimension2d<u32>(widthOfDisplayZone, heightOfDisplayZone),
+											//- windowSize: Size of the Window or screen in FullScreenMode to be created.
+			16,								//- bits: Amount of color bits per pixel.This should be 16 or 32. The parameter is often ignored when running in windowed mode.
+			false,//- fullscreen: Specifies if we want the device to run in fullscreen mode or not.
+			true,							//- stencilbuffer: Specifies if we want to use the stencil buffer (for drawing shadows).
+			true,							//- vsync: Specifies if we want to have vsync enabled, this is only useful in fullscreen mode.
+			0								//- eventReceiver: An object to receive events. We do not want to use this parameter here, and set it to 0.
+			);
+
 
 	device->setWindowCaption(L"Light field display");
 
@@ -140,7 +158,7 @@ int main(int argc, char* argv[])
 	// strcpy(filename, itoa(heightOfDisplayZone, buffer, 10));
 	// strcat(filename, filenameSharedEnding);
 
-	filename = "Img-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
+	// filename = "Img-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
 
 	if(isTesting)
 	{
@@ -153,5 +171,5 @@ int main(int argc, char* argv[])
 
 
 	videoDriver->writeImageToFile(videoDriver->createScreenShot(), path(filename.c_str()));
-	//while(device->run());
+	while(device->run());
 }
