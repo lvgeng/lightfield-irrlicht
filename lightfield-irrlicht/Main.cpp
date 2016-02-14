@@ -28,7 +28,7 @@ int main()
 {
 
 	//The data use for initializing. It is static since there is no need to update after initializing.
-	static InitialParametres *initialParametres = new InitialParametres();
+	static InitialParametres *initialParametres = new InitialParametres("setting.xml");
 	//The oblique projection matrix list. Only related to the projection configuration.
 	static ObliqueProjectionMatrixList* obliqueProjectionMatrixList = new ObliqueProjectionMatrixList(
 		initialParametres->widthOfProjectionPanelInScene,					//Width in scene. Relative.
@@ -59,7 +59,7 @@ int main()
 	{
 		return 1;
 	}
-	
+
 	//Set the caption of the window to some nice text. Note that there is an
 	//'L' in front of the string. The Irrlicht Engine uses wide character
 	//strings when displaying text.
@@ -75,7 +75,7 @@ int main()
 	cubeForTest->setRotation(vector3df(0, 30, 0));
 	cubeForTest->setPosition(vector3df(0,0,0.7));
 	cubeForTest->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-	if (initialParametres->isCubeSpinning)
+	if (initialParametres->isTestSubjectSpinning)
 	{
 		scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
 			core::vector3df(0, 0.3f, 0));
@@ -97,13 +97,13 @@ int main()
 	//	fighterModel->setRotation(vector3df(0, 135, 0));
 	//	fighterModel->setPosition(vector3df(0,0.15,0));
 	//}
-	//if (initialParametres->isCubeSpinning)
+	//if (initialParametres->isTestSubjectSpinning)
 	//{
 	//scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
 	//core::vector3df(0, 0.3f, 0));
 	//fighterModel->addAnimator(anim);
 	//}
-	
+
 	//Add a light source to make the cube visable.
 	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
 	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
@@ -111,7 +111,7 @@ int main()
 	//Setting the Affector and the testData will change the render parametres.
 	matrix4* viewProjectionMatrixAffector = new matrix4();
 	viewProjectionMatrixAffector->buildCameraLookAtMatrixLH(vector3df(0, 0, 0), vector3df(0, 0, 10), vector3df(0, 1, 0));
-	
+
 	ICameraSceneNode* currentCamera = sceneManager->addCameraSceneNode();
 	currentCamera->setViewMatrixAffector(*viewProjectionMatrixAffector);
 	currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(0, 19), true);
@@ -229,10 +229,10 @@ int main()
 		//Enable Stencil buffer and write in it. It's used as mask in this case. ======================================
 		glClearStencil(0);
 		glEnable(GL_STENCIL_TEST);
-		
+
 		while (device->run())
 		{
-			
+
 			videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, video::SColor(0));
 			for (int xInSubimageByPixel = 0; xInSubimageByPixel < initialParametres->widthOfSubimageByPixel; xInSubimageByPixel++)
 			{
