@@ -1,5 +1,5 @@
 #include <irrlicht.h>
-#include <SIrrCreationParameters.h>
+//#include <SIrrCreationParameters.h>
 
 #include <iostream>
 #include <chrono>
@@ -21,6 +21,21 @@ using namespace gui;
 #endif
 
 //This is the main method. We can now use main() on every platform.
+
+void savetex(ITexture *texture, std::string filename, IVideoDriver* videoDriver) {
+
+	// void* imageData = texture->lock(true);
+	video::IImage* image = videoDriver->createImageFromData (
+		texture->getColorFormat(),
+		texture->getSize(),
+		texture->lock( irr::video::E_TEXTURE_LOCK_MODE::ETLM_READ_WRITE),
+		true  //copy mem
+	);
+
+	videoDriver->writeImageToFile(image, path(filename.c_str()));
+	texture->unlock();
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -60,15 +75,18 @@ int main(int argc, char* argv[])
 	}
 
 
-	
+
 
 	// Load the width and height.
 	heightOfDisplayZone = widthOfDisplayZone * 210 / 297;
 
+  // heightOfDisplayZone = 1024;
+  // widthOfDisplayZone = 1024;
+
 	if(isTesting)
 	{
 		backgroundColor = SColor(255,255,255,255);
-		dotColor = SColor(255,0,0,0); 		
+		dotColor = SColor(255,0,0,0);
 	}
 	else
 	{
@@ -76,25 +94,6 @@ int main(int argc, char* argv[])
 		dotColor = SColor(255,255,255,255);
 	}
 
-
-	// SIrrlichtCreationParameters creationParameter;
-	// creationParameter.DriverType = video::EDT_OPENGL;
-	// creationParameter.WindowSize = dimension2d<u32>(widthOfDisplayZone, heightOfDisplayZone);
-	// creationParameter.Bits = 32;
-	// creationParameter.Fullscreen = false;
-	// creationParameter.Stencilbuffer = true;
-	// creationParameter.Vsync = true;
-
-	// IrrlichtDevice *device = createDeviceEx(creationParameter);
-	// if (!device)
-	// {
-	// 	return 1;
-	// }
-
-	// widthOfDisplayZone = 1920;
-	// heightOfDisplayZone = 1080;
-
-	
 	IrrlichtDevice *device =
 		createDevice(
 			video::EDT_OPENGL,				//- deviceType: Type of the device. This can currently be the Null-device,one of the two software renderers, D3D8, D3D9, or OpenGL.In this example we use EDT_SOFTWARE, but to try out, you might want to change it to EDT_BURNINGSVIDEO, EDT_NULL, EDT_DIRECT3D8, EDT_DIRECT3D9, or EDT_OPENGL.
@@ -115,6 +114,16 @@ int main(int argc, char* argv[])
 	ISceneManager* sceneManager = device->getSceneManager();
 	IGUIEnvironment* guiEnvironment = device->getGUIEnvironment();
 
+  video::IRenderTarget* simulatorRenderTarget = 0;
+  video::ITexture* renderTargetTex = 0;
+  scene::ICameraSceneNode* fixedCam = 0;
+  renderTargetTex = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(widthOfDisplayZone,heightOfDisplayZone), "RTT1", video::ECF_A8R8G8B8);
+  video::ITexture* renderTargetDepth = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(widthOfDisplayZone,heightOfDisplayZone), "DepthStencil", video::ECF_D24S8);
+  simulatorRenderTarget = videoDriver->addRenderTarget();
+  simulatorRenderTarget->setTexture(renderTargetTex, renderTargetDepth);
+  videoDriver->setRenderTargetEx(simulatorRenderTarget, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(0));
+
+
 	if(isTesting)
 	{
 		IGUIStaticText* informationTextBox = guiEnvironment->addStaticText(L"this is text", rect<s32>(15,15,260,30), true);
@@ -122,10 +131,11 @@ int main(int argc, char* argv[])
 		displayStr += widthOfDisplayZone;
 		displayStr += " Height = ";
 		displayStr += heightOfDisplayZone;
-		informationTextBox->setText(displayStr.c_str());		
+		informationTextBox->setText(displayStr.c_str());
 	}
 
 	videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, backgroundColor);
+
 
 	for (int xSubimageCount = 0; xSubimageCount < widthOfDisplayZone/widthOfSubimage; xSubimageCount++)
 	{
@@ -140,25 +150,30 @@ int main(int argc, char* argv[])
 					(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole/2*3
 					)
 				);
+
+      if (xSubimageCount % 5 == 0 && ySubimageCount % 5 == 0)
+      {
+        IGUIStaticText* coordinatesInformationTextBox = guiEnvironment->addStaticText(
+          L"this is text",
+          rect<s32>(xSubimageCount * widthOfSubimage,ySubimageCount * heightOfSubimage,(xSubimageCount + 3) * widthOfSubimage, (ySubimageCount + 3) * heightOfSubimage), true);
+        core::stringw displayStr = L"(";
+        displayStr += xSubimageCount * widthOfSubimage;
+        displayStr += ", ";
+        displayStr += ySubimageCount * heightOfSubimage;
+        displayStr += ")";
+        coordinatesInformationTextBox->setText(displayStr.c_str());
+      }
 		}
 	}
 
+	// videoDriver->setRenderTargetEx(0, 0, SColor(0));
+	// videoDriver->draw2DImage(renderTargetTex,	core::position2d< s32 >(100,100));
+
 	guiEnvironment->drawAll();
+
+	videoDriver->setRenderTargetEx(0, 0, SColor(0));
+	videoDriver->draw2DImage(renderTargetTex,	core::position2d< s32 >(100,100));
 	videoDriver->endScene();
-
-	// char filenameSharedBegining[] = "Img";
-	// char filenameSharedEnding[] = ".png";
-	// char buffer [33];
-
-	// char * filename = new char[strlen(filenameSharedBegining)+strlen(filenameSharedEnding)+strlen(itoa(widthOfDisplayZone, buffer, 10))+strlen(itoa(heightOfDisplayZone, buffer, 10)) + 3];
-	// strcpy(filename, filenameSharedBegining);
-	// strcat(filename, "-");
-	// strcpy(filename, itoa(widthOfDisplayZone, buffer, 10));
-	// strcat(filename, "-");
-	// strcpy(filename, itoa(heightOfDisplayZone, buffer, 10));
-	// strcat(filename, filenameSharedEnding);
-
-	// filename = "Img-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
 
 	if(isTesting)
 	{
@@ -169,7 +184,16 @@ int main(int argc, char* argv[])
 		filename = "Img-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
 	}
 
+  // IImage * screenshot = videoDriver->createScreenShot();
+	// videoDriver->writeImageToFile(screenshot, path(filename.c_str()));
+  // screenshot->drop();
 
-	videoDriver->writeImageToFile(videoDriver->createScreenShot(), path(filename.c_str()));
-	while(device->run());
+  // void* imageData = renderTargetTex->lock();
+  // IImage * image = videoDriver->createImageFromData(renderTargetTex->getColorFormat(), renderTargetTex->getSize(), imageData);
+  // videoDriver->writeImageToFile(image, path(filename.c_str()));
+
+	savetex(renderTargetTex,filename,videoDriver);
+
+  // savetex(renderTargetTex, filename, videoDriver);
+  while(device->run());
 }

@@ -70,39 +70,39 @@ int main()
 	IGUIEnvironment* guiEnvironment = device->getGUIEnvironment();
 
 	//Add a cube for the following test. Easier to figure out the problems while dealing with a simple model.
-	IMeshSceneNode* cubeForTest = sceneManager->addCubeSceneNode(1);
-	cubeForTest->setScale(vector3df(1, 1, 1));
-	cubeForTest->setRotation(vector3df(0, 30, 0));
-	cubeForTest->setPosition(vector3df(0,0,0.7));
-	cubeForTest->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	// IMeshSceneNode* cubeForTest = sceneManager->addCubeSceneNode(1);
+	// cubeForTest->setScale(vector3df(1, 1, 1));
+	// cubeForTest->setRotation(vector3df(0, 30, 0));
+	// cubeForTest->setPosition(vector3df(0,0,0.7));
+	// cubeForTest->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	// if (initialParametres->isTestSubjectSpinning)
+	// {
+	// 	scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
+	// 		core::vector3df(0, 0.3f, 0));
+	// 	cubeForTest->addAnimator(anim);
+	// }
+
+	IAnimatedMesh* mesh = sceneManager->getMesh("../media/f14/f14d.obj");
+	if (!mesh)
+	{
+		device->drop();
+		return 1;
+	}
+	IAnimatedMeshSceneNode* fighterModel = sceneManager->addAnimatedMeshSceneNode(mesh);
+	if (fighterModel)
+	{
+		fighterModel->setMaterialFlag(EMF_LIGHTING, true);
+		fighterModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
+		fighterModel->setScale(vector3df(0.1, 0.1, 0.1));
+		fighterModel->setRotation(vector3df(0, 135, 0));
+		fighterModel->setPosition(vector3df(0,0.15,0));
+	}
 	if (initialParametres->isTestSubjectSpinning)
 	{
-		scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
-			core::vector3df(0, 0.3f, 0));
-		cubeForTest->addAnimator(anim);
+	scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
+	core::vector3df(0, 0.3f, 0));
+	fighterModel->addAnimator(anim);
 	}
-
-	//IAnimatedMesh* mesh = sceneManager->getMesh("../media/f14/f14d.obj");
-	//if (!mesh)
-	//{
-	//	device->drop();
-	//	return 1;
-	//}
-	//IAnimatedMeshSceneNode* fighterModel = sceneManager->addAnimatedMeshSceneNode(mesh);
-	//if (fighterModel)
-	//{
-	//	fighterModel->setMaterialFlag(EMF_LIGHTING, true);
-	//	fighterModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
-	//	fighterModel->setScale(vector3df(0.1, 0.1, 0.1));
-	//	fighterModel->setRotation(vector3df(0, 135, 0));
-	//	fighterModel->setPosition(vector3df(0,0.15,0));
-	//}
-	//if (initialParametres->isTestSubjectSpinning)
-	//{
-	//scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
-	//core::vector3df(0, 0.3f, 0));
-	//fighterModel->addAnimator(anim);
-	//}
 
 	//Add a light source to make the cube visable.
 	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);

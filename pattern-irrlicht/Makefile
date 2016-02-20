@@ -33,6 +33,10 @@ LDFLAGS = $(USERLDFLAGS)
 #default target is Linux
 all: all_linux
 
+debug: CXXFLAGS += -DDEBUG -g
+debug: CCFLAGS += -DDEBUG -g
+debug: executable
+
 # target specific settings
 all_linux all_win32 static_win32: LDFLAGS += -L$(IrrlichtHome)/lib/$(SYSTEM) -lIrrlicht
 all_linux: LDFLAGS += -L/usr/X11R6/lib$(LIBSELECT) -lXxf86vm -lXext -lX11 -lXcursor -lGL
