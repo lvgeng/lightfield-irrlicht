@@ -5,6 +5,7 @@
 #include <chrono>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 using namespace std;
 using namespace chrono;
