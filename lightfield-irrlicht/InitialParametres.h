@@ -20,6 +20,8 @@ public:
 	double refractionIndexOfTransparentMaterial;
 
 	//function setting
+	bool isCubeEnabled;
+	bool isFighterEnabled;
 	bool isTestSubjectSpinning;
 	bool isSimulating;
 
@@ -34,21 +36,4 @@ public:
 	~InitialParametres();
 	InitialParametres();
 	InitialParametres(char* xmlConfigFilePath);
-	InitialParametres(
-		int	widthOfDisplayzoneByPixelInput,
-		int	heightOfDisplayzoneByPixelInput,
-		double widthOfProjectionPanelInSceneInput,
-		double heightOfProjectionPanelInSceneInput,
-		bool isFullscreenInput,
-		int	widthOfSubimageByPixelInput,
-		int	heightOfSubimageByPixelInput,
-		double widthOfSubimageBymmInput,
-		double heightOfSubimageBymmInput,
-		double thicknessOfTransparentMaterialBetweenDevicesInput,
-		double refractionIndexOfTransparentMaterialInput,
-		int	xSubimageCountMaxInput,
-		int	ySubimageCountMaxInput,
-		bool isTestSubjectSpinningInput,
-		bool isSimulatingInput
-		);
 };

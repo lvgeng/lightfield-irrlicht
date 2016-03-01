@@ -8,12 +8,12 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
-class EventReceiverForEsc : public IEventReceiver
+class EventReceiverForKeyboard : public IEventReceiver
 {
 private:
 	IrrlichtDevice *deviceInner;
 public:
 	bool OnEvent(const SEvent& event);
-	EventReceiverForEsc(IrrlichtDevice* device);
-	~EventReceiverForEsc();
+	EventReceiverForKeyboard(IrrlichtDevice* device);
+	~EventReceiverForKeyboard();
 };

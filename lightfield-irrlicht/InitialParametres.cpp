@@ -13,6 +13,8 @@ void InitialParametres::defaultValuesInitializing()
 	thicknessOfTransparentMaterialBetweenDevices = 3;
 	refractionIndexOfTransparentMaterial = 1.49;
 	//The data comes from the data sheet is 1.49. Do not change it if unnecessary.
+	isCubeEnabled = true;
+	isFighterEnabled = false;
 	isTestSubjectSpinning = false;
 	isSimulating = false;
 
@@ -29,41 +31,6 @@ InitialParametres::~InitialParametres()
 InitialParametres::InitialParametres()
 {
 	defaultValuesInitializing();
-}
-
-InitialParametres::InitialParametres(
-	int	widthOfDisplayzoneByPixelInput,
-	int	heightOfDisplayzoneByPixelInput,
-	double widthOfProjectionPanelInSceneInput,
-	double heightOfProjectionPanelInSceneInput,
-	bool isFullscreenInput,
-	int	widthOfSubimageByPixelInput,
-	int	heightOfSubimageByPixelInput,
-	double widthOfSubimageBymmInput,
-	double heightOfSubimageBymmInput,
-	double thicknessOfTransparentMaterialBetweenDevicesInput,
-	double refractionIndexOfTransparentMaterialInput,
-	int	xSubimageCountMaxInput,
-	int	ySubimageCountMaxInput,
-	bool isTestSubjectSpinningInput,
-	bool isSimulatingInput
-	)
-{
-	widthOfDisplayzoneByPixel = widthOfDisplayzoneByPixelInput;
-	heightOfDisplayzoneByPixel = heightOfDisplayzoneByPixelInput;
-	widthOfProjectionPanelInScene = widthOfProjectionPanelInSceneInput;
-	heightOfProjectionPanelInScene = heightOfProjectionPanelInSceneInput;
-	isFullscreen = isFullscreenInput;
-	widthOfSubimageByPixel = widthOfSubimageByPixelInput;
-	heightOfSubimageByPixel = heightOfSubimageByPixelInput;
-	widthOfSubimageBymm = widthOfSubimageBymmInput;
-	heightOfSubimageBymm = heightOfSubimageBymmInput;
-	thicknessOfTransparentMaterialBetweenDevices = thicknessOfTransparentMaterialBetweenDevicesInput;
-	refractionIndexOfTransparentMaterial = refractionIndexOfTransparentMaterialInput;
-	xSubimageCountMax = xSubimageCountMaxInput;
-	ySubimageCountMax = ySubimageCountMaxInput;
-	isTestSubjectSpinning = isTestSubjectSpinningInput;
-	isSimulating = isSimulatingInput;
 }
 
 InitialParametres::InitialParametres(char* xmlConfigFilePath)
@@ -91,6 +58,8 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		nodeRealworldSetting.append_child("refractionIndexOfTransparentMaterial").append_attribute("value") = refractionIndexOfTransparentMaterial;
 
 		pugi::xml_node nodeFunctionSetting = nodeSettings.append_child("functionSetting");
+		nodeFunctionSetting.append_child("isCubeEnabled").append_attribute("value") = isCubeEnabled;
+		nodeFunctionSetting.append_child("isFighterEnabled").append_attribute("value") = isFighterEnabled;
 		nodeFunctionSetting.append_child("isTestSubjectSpinning").append_attribute("value") = isTestSubjectSpinning;
 		nodeFunctionSetting.append_child("isSimulating").append_attribute("value") = isSimulating;
 
@@ -109,6 +78,8 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		thicknessOfTransparentMaterialBetweenDevices = doc.child("Settings").child("realworldSetting").child("thicknessOfTransparentMaterialBetweenDevices").attribute("value").as_double();
 		refractionIndexOfTransparentMaterial = doc.child("Settings").child("realworldSetting").child("refractionIndexOfTransparentMaterial").attribute("value").as_double();
 
+		isCubeEnabled = doc.child("Settings").child("functionSetting").child("isCubeEnabled").attribute("value").as_bool();
+		isFighterEnabled = doc.child("Settings").child("functionSetting").child("isFighterEnabled").attribute("value").as_bool();
 		isTestSubjectSpinning = doc.child("Settings").child("functionSetting").child("isTestSubjectSpinning").attribute("value").as_bool();
 		isSimulating = doc.child("Settings").child("functionSetting").child("isSimulating").attribute("value").as_bool();
 

@@ -2,8 +2,9 @@
 #include <GL/freeglut.h>
 #include "ObliqueProjectionMatrixList.h"
 #include "InitialParametres.h"
-#include "EventReceiverForEsc.h"
+#include "EventReceiverForKeyboard.h"
 #include "PlaneSimulator.h"
+
 
 #include <iostream>
 #include <chrono>
@@ -53,7 +54,7 @@ int main()
 			true,							//- vsync: Specifies if we want to have vsync enabled, this is only useful in fullscreen mode.
 			0								//- eventReceiver: An object to receive events. We do not want to use this parameter here, and set it to 0.
 			);
-	device->setEventReceiver(new EventReceiverForEsc(device));
+	device->setEventReceiver(new EventReceiverForKeyboard(device));
 
 	if (!device)
 	{
@@ -69,45 +70,75 @@ int main()
 	ISceneManager* sceneManager = device->getSceneManager();
 	IGUIEnvironment* guiEnvironment = device->getGUIEnvironment();
 
-	//Add a cube for the following test. Easier to figure out the problems while dealing with a simple model.
-	// IMeshSceneNode* cubeForTest = sceneManager->addCubeSceneNode(1);
-	// cubeForTest->setScale(vector3df(1, 1, 1));
-	// cubeForTest->setRotation(vector3df(0, 30, 0));
-	// cubeForTest->setPosition(vector3df(0,0,0.7));
-	// cubeForTest->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-	// if (initialParametres->isTestSubjectSpinning)
-	// {
-	// 	scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
-	// 		core::vector3df(0, 0.3f, 0));
-	// 	cubeForTest->addAnimator(anim);
-	// }
+	if (initialParametres->isCubeEnabled)
+	{
+		//Add a cube for the following test. Easier to figure out the problems while dealing with a simple model.
+		 /*IMeshSceneNode* cubeForTest = sceneManager->addCubeSceneNode(1);
+		 cubeForTest->setScale(vector3df(1, 1, 1));
+		 cubeForTest->setRotation(vector3df(0, 30, 0));
+		 cubeForTest->setPosition(vector3df(0,0,0.7));
+		 cubeForTest->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+		 if (initialParametres->isTestSubjectSpinning)
+		 {
+		 	scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
+		 		core::vector3df(0, 0.3f, 0));
+		 	cubeForTest->addAnimator(anim);
+		 }*/
+		IAnimatedMesh* mesh = sceneManager->getMesh("../media/cube.dae");
+		if (!mesh)
+		{
+			device->drop();
+			return 1;
+		}
+		IAnimatedMeshSceneNode* cubeModel = sceneManager->addAnimatedMeshSceneNode(mesh);
+		if (cubeModel)
+		{
+			cubeModel->setMaterialFlag(EMF_LIGHTING, true);
+			cubeModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
+			cubeModel->setScale(vector3df(0.3, 0.3, 0.3));
+			cubeModel->setRotation(vector3df(0, 30, 0));
+			cubeModel->setPosition(vector3df(0, 0, 0.7));
+		}
+		if (initialParametres->isTestSubjectSpinning)
+		{
+			scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
+				core::vector3df(0, 0.3f, 0));
+			cubeModel->addAnimator(anim);
+		}
+	}
 
-	IAnimatedMesh* mesh = sceneManager->getMesh("../media/f14/f14d.obj");
-	if (!mesh)
+	if (initialParametres->isFighterEnabled)
 	{
-		device->drop();
-		return 1;
+		IAnimatedMesh* mesh = sceneManager->getMesh("../media/f14/f14d.obj");
+		if (!mesh)
+		{
+			device->drop();
+			return 1;
+		}
+		IAnimatedMeshSceneNode* fighterModel = sceneManager->addAnimatedMeshSceneNode(mesh);
+		if (fighterModel)
+		{
+			fighterModel->setMaterialFlag(EMF_LIGHTING, true);
+			fighterModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
+			fighterModel->setScale(vector3df(0.1, 0.1, 0.1));
+			fighterModel->setRotation(vector3df(0, 135, 0));
+			fighterModel->setPosition(vector3df(0, 0.15, 0));
+		}
+		if (initialParametres->isTestSubjectSpinning)
+		{
+			scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
+				core::vector3df(0, 0.3f, 0));
+			fighterModel->addAnimator(anim);
+		}
 	}
-	IAnimatedMeshSceneNode* fighterModel = sceneManager->addAnimatedMeshSceneNode(mesh);
-	if (fighterModel)
-	{
-		fighterModel->setMaterialFlag(EMF_LIGHTING, true);
-		fighterModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
-		fighterModel->setScale(vector3df(0.1, 0.1, 0.1));
-		fighterModel->setRotation(vector3df(0, 135, 0));
-		fighterModel->setPosition(vector3df(0,0.15,0));
-	}
-	if (initialParametres->isTestSubjectSpinning)
-	{
-	scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
-	core::vector3df(0, 0.3f, 0));
-	fighterModel->addAnimator(anim);
-	}
+
 
 	//Add a light source to make the cube visable.
 	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
 	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
-	sceneManager->setAmbientLight(video::SColorf(0.3f, 0.3f, 0.3f));
+	sceneManager->addLightSceneNode(0, core::vector3df(200, -200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
+	sceneManager->addLightSceneNode(0, core::vector3df(-200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
+	sceneManager->setAmbientLight(video::SColorf(0.5f, 0.5f, 0.5f));
 	//Setting the Affector and the testData will change the render parametres.
 	matrix4* viewProjectionMatrixAffector = new matrix4();
 	viewProjectionMatrixAffector->buildCameraLookAtMatrixLH(vector3df(0, 0, 0), vector3df(0, 0, 10), vector3df(0, 1, 0));
@@ -261,7 +292,7 @@ int main()
 					glStencilFunc(GL_EQUAL, 0x1, 0x1);
 					glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 					currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
-					//currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(0,0), true);
+					//currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(7,7), true);
 					sceneManager->drawAll();
 				}
 			}
