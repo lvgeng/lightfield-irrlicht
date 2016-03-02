@@ -95,9 +95,9 @@ int main()
 		{
 			cubeModel->setMaterialFlag(EMF_LIGHTING, true);
 			cubeModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
-			cubeModel->setScale(vector3df(0.3, 0.3, 0.3));
+			cubeModel->setScale(vector3df(0.4, 0.4, 0.4));
 			cubeModel->setRotation(vector3df(0, 30, 0));
-			cubeModel->setPosition(vector3df(0, 0, 0.7));
+			cubeModel->setPosition(vector3df(0, 0, 0.5));
 		}
 		if (initialParametres->isTestSubjectSpinning)
 		{
