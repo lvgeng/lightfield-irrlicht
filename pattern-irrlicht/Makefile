@@ -6,11 +6,9 @@
 Target := pattern-irrlicht
 # List of source files, separated by spaces
 Sources := ./*.cpp
-#Sources := ./lightfield-irrlicht/Main.cpp ./lightfield-irrlicht/ObliqueProjectionMatrixList.cpp ./lightfield-irrlicht/InitialParametres.cpp ./lightfield-irrlicht/EventReceiverForEsc.cpp
 # Path to Irrlicht directory, should contain include/ and lib/
 IrrlichtHome := ../irrlicht-trunk
 # Path for the executable. Note that Irrlicht.dll should usually also be there for win32 systems
-#BinPath = ../bin/$(SYSTEM)
 BinPath = .
 
 # general compiler settings (might need to be set when compiling the lib, too)

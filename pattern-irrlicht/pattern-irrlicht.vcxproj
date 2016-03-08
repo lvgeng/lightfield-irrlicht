@@ -82,6 +82,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\irrlicht-trunk\include;..\windows-only\freeglut\include;$(IncludePath)</IncludePath>
     <LibraryPath>..\irrlicht-trunk\lib\Win64-visualStudio;..\windows-only\freeglut\lib\x64;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

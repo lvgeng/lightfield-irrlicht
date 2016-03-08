@@ -21,6 +21,17 @@ public:
 
 	//function setting
 	bool isCubeEnabled;
+
+	float cubeScale;
+	
+	float cubeRotationX;
+	float cubeRotationY;
+	float cubeRotationZ;
+	
+	float cubePositionX;
+	float cubePositionY;
+	float cubePositionZ;
+
 	bool isFighterEnabled;
 	bool isTestSubjectSpinning;
 	bool isSimulating;

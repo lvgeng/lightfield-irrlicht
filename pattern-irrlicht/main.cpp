@@ -54,15 +54,23 @@ int main(int argc, char* argv[])
 
 	try
 	{
-		if (argc == 3 && std::string(argv[1])=="t")
+		if (argc == 5 && std::string(argv[1])=="t")
 		{
 			isTesting = true;
 			widthOfDisplayZone = atoi(argv[2]);
+			widthOfSubimage = atoi(argv[3]);
+			heightOfSubimage = widthOfSubimage;
+			widthOfHole = atoi(argv[4]);
+			heightOfHole = widthOfHole;
 		}
-		else if (argc == 2 && atoi(argv[1]) != 0)
+		else if (argc == 4 && atoi(argv[1]) != 0)
 		{
 			isTesting = false;
 			widthOfDisplayZone = atoi(argv[1]);
+			widthOfSubimage = atoi(argv[2]);
+			heightOfSubimage = widthOfSubimage;
+			widthOfHole = atoi(argv[3]);
+			heightOfHole = widthOfHole;
 		}
 		else
 		{
@@ -71,7 +79,7 @@ int main(int argc, char* argv[])
 	}
 	catch(int error)
 	{
-		cout<<"Usage:\n"<<"'./pattern-irrlicht t HEIGHT' for testing images\n"<<"'./pattern-irrlicht HEIGHT' for images for using\n";
+		cout<<"Usage:\n"<<"'./pattern-irrlicht t HEIGHT WIDTHOFHOLE' for testing images\n"<<"'./pattern-irrlicht HEIGHT WIDTHOFHOLE' for images for using\n";
 		return 0;
 	}
 
@@ -81,8 +89,7 @@ int main(int argc, char* argv[])
 	// Load the width and height.
 	heightOfDisplayZone = widthOfDisplayZone * 210 / 297;
 
-  // heightOfDisplayZone = 1024;
-  // widthOfDisplayZone = 1024;
+
 
 	if(isTesting)
 	{
@@ -138,39 +145,38 @@ int main(int argc, char* argv[])
 	videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, backgroundColor);
 
 
-	for (int xSubimageCount = 0; xSubimageCount < widthOfDisplayZone/widthOfSubimage; xSubimageCount++)
+	for (int xSubimageCount = 0; xSubimageCount < widthOfDisplayZone / widthOfSubimage; xSubimageCount++)
 	{
-		for (int ySubimageCount = 0; ySubimageCount < heightOfDisplayZone/heightOfSubimage; ySubimageCount++)
+		for (int ySubimageCount = 0; ySubimageCount < heightOfDisplayZone / heightOfSubimage; ySubimageCount++)
 		{
 			videoDriver->draw2DRectangle(
 				dotColor,
 				core::rect<s32>(
-					(xSubimageCount + 0.5) * widthOfSubimage + widthOfHole/2,
-					(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole/2,
-					(xSubimageCount + 0.5) * widthOfSubimage + widthOfHole/2*3,
-					(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole/2*3
+					(xSubimageCount + 0.5) * widthOfSubimage - widthOfHole / 2,
+					(ySubimageCount + 0.5) * heightOfSubimage - heightOfHole / 2,
+					(xSubimageCount + 0.5) * widthOfSubimage + widthOfHole / 2 ,
+					(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole / 2
 					)
 				);
 
-      if (xSubimageCount % 5 == 0 && ySubimageCount % 5 == 0)
-      {
-        IGUIStaticText* coordinatesInformationTextBox = guiEnvironment->addStaticText(
-          L"this is text",
-          rect<s32>(xSubimageCount * widthOfSubimage,ySubimageCount * heightOfSubimage,(xSubimageCount + 3) * widthOfSubimage, (ySubimageCount + 3) * heightOfSubimage), true);
-        core::stringw displayStr = L"(";
-        displayStr += xSubimageCount * widthOfSubimage;
-        displayStr += ", ";
-        displayStr += ySubimageCount * heightOfSubimage;
-        displayStr += ")";
-        coordinatesInformationTextBox->setText(displayStr.c_str());
-      }
+			if (isTesting && xSubimageCount % 5 == 0 && ySubimageCount % 5 == 0)
+			{
+				IGUIStaticText* coordinatesInformationTextBox = guiEnvironment->addStaticText(
+					L"this is text",
+				rect<s32>(xSubimageCount * widthOfSubimage, ySubimageCount * heightOfSubimage, (xSubimageCount + 3) * widthOfSubimage, (ySubimageCount + 3) * heightOfSubimage), true);
+				core::stringw displayStr = L"(";
+				displayStr += xSubimageCount * widthOfSubimage;
+				displayStr += ", ";
+				displayStr += ySubimageCount * heightOfSubimage;
+				displayStr += ")";
+				coordinatesInformationTextBox->setText(displayStr.c_str());
+			}
 		}
 	}
-
 	// videoDriver->setRenderTargetEx(0, 0, SColor(0));
 	// videoDriver->draw2DImage(renderTargetTex,	core::position2d< s32 >(100,100));
 
-	guiEnvironment->drawAll();
+	guiEnvironment->drawAll();	
 
 	videoDriver->setRenderTargetEx(0, 0, SColor(0));
 	videoDriver->draw2DImage(renderTargetTex,	core::position2d< s32 >(100,100));
