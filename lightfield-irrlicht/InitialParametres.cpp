@@ -2,8 +2,8 @@
 
 void InitialParametres::defaultValuesInitializing()
 {
-	widthOfDisplayzoneByPixel = 800;
-	heightOfDisplayzoneByPixel = 600;
+	widthOfRenderzoneByPixel = 800;
+	heightOfRenderzoneByPixel = 600;
 	isFullscreen = false;
 	widthOfSubimageByPixel = 20;
 	heightOfSubimageByPixel = 20;
@@ -21,15 +21,15 @@ void InitialParametres::defaultValuesInitializing()
 	cubePositionX = 0;
 	cubePositionY = 0;
 	cubePositionZ = 0.3;
-	
+
 	isFighterEnabled = false;
 	isTestSubjectSpinning = false;
 	isSimulating = false;
 
 	heightOfProjectionPanelInScene = 2;
-	widthOfProjectionPanelInScene = heightOfProjectionPanelInScene * widthOfDisplayzoneByPixel / heightOfDisplayzoneByPixel;
-	xSubimageCountMax = widthOfDisplayzoneByPixel / widthOfSubimageByPixel;
-	ySubimageCountMax = heightOfDisplayzoneByPixel / heightOfSubimageByPixel;
+	widthOfProjectionPanelInScene = heightOfProjectionPanelInScene * widthOfRenderzoneByPixel / heightOfRenderzoneByPixel;
+	xSubimageCountMax = widthOfRenderzoneByPixel / widthOfSubimageByPixel;
+	ySubimageCountMax = heightOfRenderzoneByPixel / heightOfSubimageByPixel;
 }
 
 InitialParametres::~InitialParametres()
@@ -52,8 +52,8 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
     // add node with some name
     pugi::xml_node nodeSettings = doc.append_child("Settings");
 		pugi::xml_node nodeDisplaySetting = nodeSettings.append_child("displaySetting");
-			nodeDisplaySetting.append_child("widthOfDisplayzoneByPixel").append_attribute("value") = widthOfDisplayzoneByPixel;
-			nodeDisplaySetting.append_child("heightOfDisplayzoneByPixel").append_attribute("value") = heightOfDisplayzoneByPixel;
+			nodeDisplaySetting.append_child("widthOfRenderzoneByPixel").append_attribute("value") = widthOfRenderzoneByPixel;
+			nodeDisplaySetting.append_child("heightOfRenderzoneByPixel").append_attribute("value") = heightOfRenderzoneByPixel;
 			nodeDisplaySetting.append_child("isFullscreen").append_attribute("value") = isFullscreen;
 			nodeDisplaySetting.append_child("widthOfSubimageByPixel").append_attribute("value") = widthOfSubimageByPixel;
 			nodeDisplaySetting.append_child("heightOfSubimageByPixel").append_attribute("value") = heightOfSubimageByPixel;
@@ -82,8 +82,8 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 	}
 	else
 	{
-		widthOfDisplayzoneByPixel = doc.child("Settings").child("displaySetting").child("widthOfDisplayzoneByPixel").attribute("value").as_int();
-		heightOfDisplayzoneByPixel = doc.child("Settings").child("displaySetting").child("heightOfDisplayzoneByPixel").attribute("value").as_int();
+		widthOfRenderzoneByPixel = doc.child("Settings").child("displaySetting").child("widthOfRenderzoneByPixel").attribute("value").as_int();
+		heightOfRenderzoneByPixel = doc.child("Settings").child("displaySetting").child("heightOfRenderzoneByPixel").attribute("value").as_int();
 		isFullscreen = doc.child("Settings").child("displaySetting").child("isFullscreen").attribute("value").as_bool();
 		widthOfSubimageByPixel = doc.child("Settings").child("displaySetting").child("widthOfSubimageByPixel").attribute("value").as_int();
 		heightOfSubimageByPixel = doc.child("Settings").child("displaySetting").child("heightOfSubimageByPixel").attribute("value").as_int();
@@ -107,8 +107,8 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		isSimulating = doc.child("Settings").child("functionSetting").child("isSimulating").attribute("value").as_bool();
 
 		heightOfProjectionPanelInScene = 2;
-		widthOfProjectionPanelInScene = heightOfProjectionPanelInScene * widthOfDisplayzoneByPixel / heightOfDisplayzoneByPixel;
-		xSubimageCountMax = widthOfDisplayzoneByPixel / widthOfSubimageByPixel;
-		ySubimageCountMax = heightOfDisplayzoneByPixel / heightOfSubimageByPixel;
+		widthOfProjectionPanelInScene = heightOfProjectionPanelInScene * widthOfRenderzoneByPixel / heightOfRenderzoneByPixel;
+		xSubimageCountMax = widthOfRenderzoneByPixel / widthOfSubimageByPixel;
+		ySubimageCountMax = heightOfRenderzoneByPixel / heightOfSubimageByPixel;
 	}
 }

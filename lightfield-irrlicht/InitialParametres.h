@@ -8,8 +8,8 @@ class InitialParametres
 {
 public:
 	//display setting
-	int widthOfDisplayzoneByPixel;
-	int heightOfDisplayzoneByPixel;
+	int widthOfRenderzoneByPixel;
+	int heightOfRenderzoneByPixel;
 	bool isFullscreen;
 	int widthOfSubimageByPixel;
 	int heightOfSubimageByPixel;
@@ -23,11 +23,11 @@ public:
 	bool isCubeEnabled;
 
 	float cubeScale;
-	
+
 	float cubeRotationX;
 	float cubeRotationY;
 	float cubeRotationZ;
-	
+
 	float cubePositionX;
 	float cubePositionY;
 	float cubePositionZ;

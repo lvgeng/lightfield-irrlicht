@@ -56,7 +56,7 @@ int main()
 	createDevice(
 		video::EDT_OPENGL,				//- deviceType: Type of the device. This can currently be the Null-device,one of the two software renderers, D3D8, D3D9, or OpenGL.In this example we use EDT_SOFTWARE, but to try out, you might want to change it to EDT_BURNINGSVIDEO, EDT_NULL, EDT_DIRECT3D8, EDT_DIRECT3D9, or EDT_OPENGL.
 		//video::EDT_DIRECT3D9,
-		dimension2d<u32>(initialParametres->widthOfDisplayzoneByPixel, initialParametres->heightOfDisplayzoneByPixel),
+		dimension2d<u32>(initialParametres->widthOfRenderzoneByPixel, initialParametres->heightOfRenderzoneByPixel),
 		//- windowSize: Size of the Window or screen in FullScreenMode to be created.
 		16,								//- bits: Amount of color bits per pixel.This should be 16 or 32. The parameter is often ignored when running in windowed mode.
 		initialParametres->isFullscreen,//- fullscreen: Specifies if we want the device to run in fullscreen mode or not.
@@ -77,8 +77,8 @@ int main()
 	video::IRenderTarget* renderTargetAllSubimages = 0;
 	video::ITexture* renderTargetTex = 0;
 	scene::ICameraSceneNode* fixedCam = 0;
-	renderTargetTex = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(initialParametres->widthOfDisplayzoneByPixel, initialParametres->heightOfDisplayzoneByPixel), "RTT1", video::ECF_A8R8G8B8);
-	video::ITexture* renderTargetDepth = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(initialParametres->widthOfDisplayzoneByPixel, initialParametres->heightOfDisplayzoneByPixel), "DepthStencil", video::ECF_D24S8);
+	renderTargetTex = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(initialParametres->widthOfRenderzoneByPixel, initialParametres->heightOfRenderzoneByPixel), "RTT1", video::ECF_A8R8G8B8);
+	video::ITexture* renderTargetDepth = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(initialParametres->widthOfRenderzoneByPixel, initialParametres->heightOfRenderzoneByPixel), "DepthStencil", video::ECF_D24S8);
 	renderTargetAllSubimages = videoDriver->addRenderTarget();
 	renderTargetAllSubimages->setTexture(renderTargetTex, renderTargetDepth);
 
@@ -191,8 +191,8 @@ int main()
 		//Decide if there is a simulator.
 		static PlaneSimulator *planeSimulator = new PlaneSimulator(
 			vector3df(0, 1, -3),
-			initialParametres->widthOfDisplayzoneByPixel,
-			initialParametres->heightOfDisplayzoneByPixel,
+			initialParametres->widthOfRenderzoneByPixel,
+			initialParametres->heightOfRenderzoneByPixel,
 			initialParametres->widthOfSubimageByPixel,
 			initialParametres->heightOfSubimageByPixel,
 			initialParametres->widthOfSubimageBymm,
@@ -290,8 +290,8 @@ int main()
 				core::rect<s32>(
 					0,
 					0,
-					initialParametres->widthOfDisplayzoneByPixel,
-					initialParametres->heightOfDisplayzoneByPixel
+					initialParametres->widthOfRenderzoneByPixel,
+					initialParametres->heightOfRenderzoneByPixel
 					),
 				0,
 				video::SColor(255, 255, 255, 255), true);

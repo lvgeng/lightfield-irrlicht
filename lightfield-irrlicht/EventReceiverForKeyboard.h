@@ -1,6 +1,11 @@
 #pragma once
 #include <irrlicht.h>
 #include <string>
+#include <iostream>
+#include <chrono>
+#include <stdio.h>
+#include <stdlib.h>
+
 using namespace irr;
 
 using namespace core;

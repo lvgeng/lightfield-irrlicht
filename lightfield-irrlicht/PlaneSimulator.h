@@ -27,7 +27,7 @@ private:
 
 public:
 	vector2df getCoorinatesInSubimage(int subimageCountX, int subimageCountY);
-	PlaneSimulator(vector3df cameraPositionInput, int widthOfDisplayzoneByPixel, int heightOfDisplayzoneByPixel, int widthOfSubimageByPixel, int heightOfSubimageByPixel, double widthOfSubimageBymm, double heightOfSubimageBymm, double thicknessOfTransparentMaterialBetweenDevices, double refractionIndexOfTransparentMaterial, int widthOfHoleByPixel, int HeightOfHoleByPixle);
+	PlaneSimulator(vector3df cameraPositionInput, int widthOfRenderzoneByPixel, int heightOfRenderzoneByPixel, int widthOfSubimageByPixel, int heightOfSubimageByPixel, double widthOfSubimageBymm, double heightOfSubimageBymm, double thicknessOfTransparentMaterialBetweenDevices, double refractionIndexOfTransparentMaterial, int widthOfHoleByPixel, int HeightOfHoleByPixle);
 	~PlaneSimulator();
 };
 
