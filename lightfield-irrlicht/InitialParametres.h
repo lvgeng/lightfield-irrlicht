@@ -35,6 +35,7 @@ public:
 	bool isFighterEnabled;
 	bool isTestSubjectSpinning;
 	bool isSimulating;
+	bool isSingleFrameRenderingAndQuitMode;
 
 	//Calculated.
 	double widthOfProjectionPanelInScene;

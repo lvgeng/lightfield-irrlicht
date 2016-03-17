@@ -25,6 +25,7 @@ void InitialParametres::defaultValuesInitializing()
 	isFighterEnabled = false;
 	isTestSubjectSpinning = false;
 	isSimulating = false;
+	isSingleFrameRenderingAndQuitMode = false;
 
 	heightOfProjectionPanelInScene = 2;
 	widthOfProjectionPanelInScene = heightOfProjectionPanelInScene * widthOfRenderzoneByPixel / heightOfRenderzoneByPixel;
@@ -77,6 +78,7 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 			nodeFunctionSetting.append_child("isFighterEnabled").append_attribute("value") = isFighterEnabled;
 			nodeFunctionSetting.append_child("isTestSubjectSpinning").append_attribute("value") = isTestSubjectSpinning;
 			nodeFunctionSetting.append_child("isSimulating").append_attribute("value") = isSimulating;
+			nodeFunctionSetting.append_child("isSingleFrameRenderingAndQuitMode").append_attribute("value") = isSingleFrameRenderingAndQuitMode;
 
 		doc.save_file(xmlConfigFilePath);
 	}
@@ -105,6 +107,7 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		isFighterEnabled = doc.child("Settings").child("functionSetting").child("isFighterEnabled").attribute("value").as_bool();
 		isTestSubjectSpinning = doc.child("Settings").child("functionSetting").child("isTestSubjectSpinning").attribute("value").as_bool();
 		isSimulating = doc.child("Settings").child("functionSetting").child("isSimulating").attribute("value").as_bool();
+		isSingleFrameRenderingAndQuitMode = doc.child("Settings").child("functionSetting").child("isSingleFrameRenderingAndQuitMode").attribute("value").as_bool();
 
 		heightOfProjectionPanelInScene = 2;
 		widthOfProjectionPanelInScene = heightOfProjectionPanelInScene * widthOfRenderzoneByPixel / heightOfRenderzoneByPixel;

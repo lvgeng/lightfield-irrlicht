@@ -208,8 +208,8 @@ int main()
 			//===================================================================================================
 			//===================================================================================================
 			//===================================================================================================
-			videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, SColor(0));
-			videoDriver->setRenderTargetEx(renderTargetAllSubimages, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(0));
+			videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, SColor(255,0,0,0));//If it is SColor(0), the background will be transparent
+			videoDriver->setRenderTargetEx(renderTargetAllSubimages, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(255,0,0,0));
 
 			for (int xInSubimageByPixel = 0; xInSubimageByPixel < initialParametres->widthOfSubimageByPixel; xInSubimageByPixel++)
 			{
@@ -295,6 +295,12 @@ int main()
 					),
 				0,
 				video::SColor(255, 255, 255, 255), true);
+			}
+
+			if (initialParametres->isSingleFrameRenderingAndQuitMode)
+			{
+				savetex(renderTargetTex, "SingleFrameRenderingResult.png", videoDriver);
+				break;
 			}
 
 			glEnable(GL_STENCIL_TEST);

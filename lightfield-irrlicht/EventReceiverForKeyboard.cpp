@@ -10,22 +10,40 @@ bool EventReceiverForKeyboard::OnEvent(const SEvent & event)
 	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_1  && event.KeyInput.PressedDown)
 	{
 		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
-		savetex(renderTargetTexInner,"screenshot1.png",videoDriver);
+		savetex(renderTargetTexInner,"renderingResult1.png",videoDriver);
 		// videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot1.png");
 		return true;
 	}
 	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_2  && event.KeyInput.PressedDown)
 	{
 		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
-		savetex(renderTargetTexInner,"screenshot2.png",videoDriver);
+		savetex(renderTargetTexInner,"renderingResult2.png",videoDriver);
 		// videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot2.png");
 		return true;
 	}
 	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_3  && event.KeyInput.PressedDown)
 	{
 		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
-		savetex(renderTargetTexInner,"screenshot3.png",videoDriver);
+		savetex(renderTargetTexInner,"renderingResult3.png",videoDriver);
 		// videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot3.png");
+		return true;
+	}
+	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_4  && event.KeyInput.PressedDown)
+	{
+		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
+		videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot1.png");
+		return true;
+	}
+	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_5  && event.KeyInput.PressedDown)
+	{
+		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
+		videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot2.png");
+		return true;
+	}
+	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_6  && event.KeyInput.PressedDown)
+	{
+		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
+		videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot3.png");
 		return true;
 	}
 }
