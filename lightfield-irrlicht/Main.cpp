@@ -24,6 +24,16 @@ using namespace gui;
 #endif
 
 //This is the main method. We can now use main() on every platform.
+void savetex(ITexture *texture, std::string filename, IVideoDriver* videoDriver) {
+	video::IImage* image = videoDriver->createImageFromData(
+		texture->getColorFormat(),
+		texture->getSize(),
+		texture->lock(irr::video::E_TEXTURE_LOCK_MODE::ETLM_READ_WRITE),
+		true  //copy mem
+		);
+	videoDriver->writeImageToFile(image, path(filename.c_str()));
+	texture->unlock();
+}
 
 int main()
 {
@@ -72,7 +82,7 @@ int main()
 	renderTargetAllSubimages = videoDriver->addRenderTarget();
 	renderTargetAllSubimages->setTexture(renderTargetTex, renderTargetDepth);
 
-	// device->setEventReceiver(new EventReceiverForKeyboard(device, renderTargetTex));
+	device->setEventReceiver(new EventReceiverForKeyboard(device, renderTargetTex));
 
 	if (!device)
 	{

@@ -10,21 +10,21 @@ bool EventReceiverForKeyboard::OnEvent(const SEvent & event)
 	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_1  && event.KeyInput.PressedDown)
 	{
 		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
-		savetex(renderTargetTexInner,"screenshot1",videoDriver);
+		savetex(renderTargetTexInner,"screenshot1.png",videoDriver);
 		// videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot1.png");
 		return true;
 	}
 	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_2  && event.KeyInput.PressedDown)
 	{
 		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
-		savetex(renderTargetTexInner,"screenshot2",videoDriver);
+		savetex(renderTargetTexInner,"screenshot2.png",videoDriver);
 		// videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot2.png");
 		return true;
 	}
 	else if (event.EventType == irr::EET_KEY_INPUT_EVENT && event.KeyInput.Key == irr::KEY_KEY_3  && event.KeyInput.PressedDown)
 	{
 		IVideoDriver* videoDriver = deviceInner->getVideoDriver();
-		savetex(renderTargetTexInner,"screenshot3",videoDriver);
+		savetex(renderTargetTexInner,"screenshot3.png",videoDriver);
 		// videoDriver->writeImageToFile(videoDriver->createScreenShot(), "screenshot3.png");
 		return true;
 	}
