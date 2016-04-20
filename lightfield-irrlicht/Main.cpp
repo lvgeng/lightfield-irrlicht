@@ -1,6 +1,6 @@
 #include <irrlicht.h>
 #include <GL/freeglut.h>
-#include "ObliqueProjectionMatrixList.h"
+#include "ObliqueMatrixList.h"
 #include "InitialParametres.h"
 #include "EventReceiverForKeyboard.h"
 #include "PlaneSimulator.h"
@@ -41,13 +41,15 @@ int main()
 	//The data use for initializing. It is static since there is no need to update after initializing.
 	static InitialParametres *initialParametres = new InitialParametres("setting.xml");
 	//The oblique projection matrix list. Only related to the projection configuration.
-	static ObliqueProjectionMatrixList* obliqueProjectionMatrixList = new ObliqueProjectionMatrixList(
+	static ObliqueMatrixList* obliqueMatrixList = new ObliqueMatrixList(
 		initialParametres->widthOfProjectionPanelInScene,					//Width in scene. Relative.
 		initialParametres->heightOfProjectionPanelInScene,					//Height in scene. Relative.
 		initialParametres->widthOfSubimageByPixel,							//Width of the subimage. (pixel)
 		initialParametres->heightOfSubimageByPixel,							//Height of the subimage. (pixel)
 		initialParametres->widthOfSubimageBymm,								//Width of the subimage. (mm)
 		initialParametres->heightOfSubimageBymm,							//Height of the subimage. (mm)
+		initialParametres->widthOfRenderzoneBymm,
+		initialParametres->heightOfRenderzoneBymm,
 		initialParametres->thicknessOfTransparentMaterialBetweenDevices,	//Thickness of the transparent material between the light barriers and the screen. It will affect the result because of the refraction.
 		initialParametres->refractionIndexOfTransparentMaterial				//Rafraction index of the transparent material.
 	);
@@ -174,7 +176,7 @@ int main()
 
 		ICameraSceneNode* currentCamera = sceneManager->addCameraSceneNode();
 		currentCamera->setViewMatrixAffector(*viewProjectionMatrixAffector);
-		currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(0, 19), true);
+		currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(0, 19), true);
 		//===========================================================================================================================
 		//===========================================================================================================================
 		//===========================================================================================================================
@@ -237,7 +239,7 @@ int main()
 					}
 					glStencilFunc(GL_EQUAL, 0x1, 0x1);
 					glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-					currentCamera->setProjectionMatrix(*obliqueProjectionMatrixList->getProjectionByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
+					currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
 					sceneManager->drawAll();
 				}
 			}

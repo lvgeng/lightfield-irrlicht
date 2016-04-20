@@ -16,6 +16,10 @@ public:
 	//real world setting
 	double widthOfSubimageBymm;
 	double heightOfSubimageBymm;
+
+	double widthOfRenderzoneBymm;
+	double heightOfRenderzoneBymm;
+	
 	double thicknessOfTransparentMaterialBetweenDevices;
 	double refractionIndexOfTransparentMaterial;
 
