@@ -75,7 +75,7 @@ ObliqueMatrixList::ObliqueMatrixList(
 			// }
 			
 			viewMatrixList[i][j] = new irr::core::matrix4();
-			viewMatrixList[i][j]->buildCameraLookAtMatrixLH(vector3df(0, 0, h/rWidthBymm), vector3df(0, 0, 100), vector3df(0, 1, 0));;
+			viewMatrixList[i][j]->buildCameraLookAtMatrixLH(vector3df(0, 0, 2 * h / rHeightBymm), vector3df(0, 0, 100), vector3df(0, 1, 0));;
 			// std::cout << "X=" << x << "\n" << "Y=" << y << "\n" << "h=" << h << "\n\n" << rWidthBymm <<"\n\n";
 
 		}
