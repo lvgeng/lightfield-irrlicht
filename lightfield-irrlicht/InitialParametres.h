@@ -2,7 +2,28 @@
 
 #include <vector>
 #include <irrlicht.h>
+#include <iostream>
+#include <irrlicht.h>
 #include "pugixml.hpp"
+
+class DiaplayedObject
+{
+public:
+	bool isEnabled;
+	// io::path * filePath;
+	char filepath[]= "../media/cube.dae";
+
+	float scale;
+
+	float rotationX;
+	float rotationY;
+	float rotationZ;
+
+	float positionX;
+	float positionY;
+	float positionZ;
+
+};
 
 class InitialParametres
 {

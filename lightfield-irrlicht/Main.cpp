@@ -115,7 +115,9 @@ int main()
 		core::vector3df(0, 0.3f, 0));
 		cubeForTest->addAnimator(anim);
 	}*/
-	IAnimatedMesh* mesh = sceneManager->getMesh("../media/cube.dae");
+	// IAnimatedMesh* mesh = sceneManager->getMesh("../media/cube.dae");
+	char filepath[]= "../media/cube.dae";
+	IAnimatedMesh* mesh = sceneManager->getMesh(filepath);
 	if (!mesh)
 	{
 		device->drop();
