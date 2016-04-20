@@ -1,4 +1,5 @@
 #include "InitialParametres.h"
+#include <iostream>
 
 void InitialParametres::defaultValuesInitializing()
 {
@@ -61,15 +62,17 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 			nodeDisplaySetting.append_child("isFullscreen").append_attribute("value") = isFullscreen;
 			nodeDisplaySetting.append_child("widthOfSubimageByPixel").append_attribute("value") = widthOfSubimageByPixel;
 			nodeDisplaySetting.append_child("heightOfSubimageByPixel").append_attribute("value") = heightOfSubimageByPixel;
+
 		pugi::xml_node nodeRealworldSetting = nodeSettings.append_child("realworldSetting");
 			nodeRealworldSetting.append_child("widthOfSubimageBymm").append_attribute("value") = widthOfSubimageBymm;
 			nodeRealworldSetting.append_child("heightOfSubimageBymm").append_attribute("value") = heightOfSubimageBymm;
 
-			nodeDisplaySetting.append_child("widthOfRenderzoneBymm").append_attribute("value") = widthOfRenderzoneBymm;
-			nodeDisplaySetting.append_child("heightOfRenderzoneBymm").append_attribute("value") = heightOfRenderzoneBymm;
-			
+			nodeRealworldSetting.append_child("widthOfRenderzoneBymm").append_attribute("value") = widthOfRenderzoneBymm;
+			nodeRealworldSetting.append_child("heightOfRenderzoneBymm").append_attribute("value") = heightOfRenderzoneBymm;
+
 			nodeRealworldSetting.append_child("thicknessOfTransparentMaterialBetweenDevices").append_attribute("value") = thicknessOfTransparentMaterialBetweenDevices;
 			nodeRealworldSetting.append_child("refractionIndexOfTransparentMaterial").append_attribute("value") = refractionIndexOfTransparentMaterial;
+			
 		pugi::xml_node nodeFunctionSetting = nodeSettings.append_child("functionSetting");
 			pugi::xml_node nodeIsCubeEnabled = nodeFunctionSetting.append_child("isCubeEnabled");
 				nodeIsCubeEnabled.append_attribute("value") = isCubeEnabled;
@@ -100,8 +103,14 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		widthOfSubimageBymm = doc.child("Settings").child("realworldSetting").child("widthOfSubimageBymm").attribute("value").as_double();
 		heightOfSubimageBymm = doc.child("Settings").child("realworldSetting").child("heightOfSubimageBymm").attribute("value").as_double();
 
+		// std::cout << " Loading XML widthOfSubimageBymm = " << widthOfSubimageBymm << "\n\n";
+
 		widthOfRenderzoneBymm = doc.child("Settings").child("realworldSetting").child("widthOfRenderzoneBymm").attribute("value").as_double();
 		heightOfRenderzoneBymm = doc.child("Settings").child("realworldSetting").child("heightOfRenderzoneBymm").attribute("value").as_double();
+
+		// std::cout << " Loading XML widthOfRenderzoneBymm = " << widthOfRenderzoneBymm << "\n\n";
+
+
 		
 		thicknessOfTransparentMaterialBetweenDevices = doc.child("Settings").child("realworldSetting").child("thicknessOfTransparentMaterialBetweenDevices").attribute("value").as_double();
 		refractionIndexOfTransparentMaterial = doc.child("Settings").child("realworldSetting").child("refractionIndexOfTransparentMaterial").attribute("value").as_double();

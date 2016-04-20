@@ -175,7 +175,8 @@ int main()
 		viewProjectionMatrixAffector->buildCameraLookAtMatrixLH(vector3df(0, 0, 0), vector3df(0, 0, 10), vector3df(0, 1, 0));
 
 		ICameraSceneNode* currentCamera = sceneManager->addCameraSceneNode();
-		currentCamera->setViewMatrixAffector(*viewProjectionMatrixAffector);
+		// currentCamera->setViewMatrixAffector(*viewProjectionMatrixAffector);
+		currentCamera->setViewMatrixAffector(*obliqueMatrixList->getViewMatrixByPixel(0, 19));
 		currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(0, 19), true);
 		//===========================================================================================================================
 		//===========================================================================================================================
@@ -239,6 +240,7 @@ int main()
 					}
 					glStencilFunc(GL_EQUAL, 0x1, 0x1);
 					glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+					currentCamera->setViewMatrixAffector(*obliqueMatrixList->getViewMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel));
 					currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
 					sceneManager->drawAll();
 				}

@@ -51,7 +51,13 @@ ObliqueMatrixList::ObliqueMatrixList(
 
 			double x = wBymm / 2 + (-0.5 - (double)i) * wBymm / wByPixel;
 			double y = ((double)j + 0.5) * hBymm / hByPixel - hBymm / 2;
-			double h = sqrt(((pow(x,2) + pow(y,2)) * (1 - refractionI) * (1 + refractionI) + pow(tBymm,2))) / refractionI; //The interesting thing is, there will still be some outputs even if the input is a negative value... Not so sure if it is a good thing. but for test it is enough.
+			double h2 = (pow(x,2) + pow(y,2)) * (1 - refractionI) * (1 + refractionI) + pow(tBymm,2);
+			double h = 0;
+			if(h2 >= 0)
+			{
+				h = sqrt(h2) / refractionI;
+			}
+			// double h = sqrt((pow(x,2) + pow(y,2)) * (1 - refractionI) * (1 + refractionI) + pow(tBymm,2)) / refractionI; //The interesting thing is, there will still be some outputs even if the input is a negative value... Not so sure if it is a good thing. but for test it is enough.
 
 
 			irr::f32 valueOfMatrixElement[16] = {
@@ -69,7 +75,9 @@ ObliqueMatrixList::ObliqueMatrixList(
 			// }
 			
 			viewMatrixList[i][j] = new irr::core::matrix4();
-			viewMatrixList[i][j]->buildCameraLookAtMatrixLH(vector3df(0, 0, h), vector3df(0, 0, 10), vector3df(0, 1, 0));;
+			viewMatrixList[i][j]->buildCameraLookAtMatrixLH(vector3df(0, 0, h/rWidthBymm), vector3df(0, 0, 100), vector3df(0, 1, 0));;
+			// std::cout << "X=" << x << "\n" << "Y=" << y << "\n" << "h=" << h << "\n\n" << rWidthBymm <<"\n\n";
+
 		}
 	}
 }
@@ -81,4 +89,9 @@ ObliqueMatrixList::~ObliqueMatrixList()
 irr::core::matrix4 * ObliqueMatrixList::getProjectionMatrixByPixel(int x, int y)
 {
 	return projectionMatrixList[x][y];
+}
+
+irr::core::matrix4 * ObliqueMatrixList::getViewMatrixByPixel(int x, int y)
+{
+	return viewMatrixList[x][y];
 }
