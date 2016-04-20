@@ -242,10 +242,76 @@ int main()
 				}
 			}
 			//===================================================================================================
+			glDisable(GL_STENCIL_TEST);
+			//===================================================================================================
+			for (int leftToRightCount = 0; leftToRightCount < initialParametres->xSubimageCountMax; leftToRightCount++)
+			{
+				videoDriver->draw2DRectangle(
+				SColor(255,0,0,0),
+				core::rect<s32>(
+					leftToRightCount * initialParametres->widthOfSubimageByPixel,
+					0,
+					(leftToRightCount + 1) * initialParametres->widthOfSubimageByPixel,
+					initialParametres->heightOfSubimageByPixel
+					)
+				);
+				videoDriver->draw2DRectangle(
+				SColor(255,0,0,0),
+				core::rect<s32>(
+					leftToRightCount * initialParametres->widthOfSubimageByPixel,
+					(initialParametres->ySubimageCountMax - 1) * initialParametres->heightOfSubimageByPixel,
+					(leftToRightCount + 1) * initialParametres->widthOfSubimageByPixel,
+					(initialParametres->ySubimageCountMax) * initialParametres->heightOfSubimageByPixel
+					)
+				);
+
+				if (initialParametres->widthOfSubimageByPixel % 2 ==0)
+				{
+					videoDriver->draw2DRectangle(
+					SColor(255,255,255,255),
+					core::rect<s32>(
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 1,
+						0.5 * initialParametres->heightOfSubimageByPixel - 1,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
+						0.5 * initialParametres->heightOfSubimageByPixel + 1
+						)
+					);
+					videoDriver->draw2DRectangle(
+					SColor(255,255,255,255),
+					core::rect<s32>(
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 1,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel - 1,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 1
+						)
+					);
+				}
+				else
+				{
+					videoDriver->draw2DRectangle(
+					SColor(255,255,255,255),
+					core::rect<s32>(
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel,
+						0.5 * initialParametres->heightOfSubimageByPixel,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
+						0.5 * initialParametres->heightOfSubimageByPixel + 1
+						)
+					);
+					videoDriver->draw2DRectangle(
+					SColor(255,255,255,255),
+					core::rect<s32>(
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 1
+						)
+					);					
+				}
+
+			}
 			//===================================================================================================
 			//===================================================================================================
 			videoDriver->setRenderTargetEx(0, 0, SColor(0));
-			glDisable(GL_STENCIL_TEST);
 
 			if (initialParametres->isSimulating)
 			{
