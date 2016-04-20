@@ -1,8 +1,29 @@
-#include "ObliqueProjectionMatrixList.h"
+#include "ObliqueMatrixList.h"
+#include <irrlicht.h>
+#include <GL/freeglut.h>
 #include <iostream>
 #include <math.h>
 
-ObliqueProjectionMatrixList::ObliqueProjectionMatrixList(double widthInScene, double heightInScene, int widthByPixel, int heightByPixel, double widthBymm, double heightBymm, double thicknessBymm, double refractionIndex)
+using namespace std;
+using namespace irr;
+using namespace core;
+using namespace scene;
+using namespace video;
+using namespace io;
+using namespace gui;
+
+
+ObliqueMatrixList::ObliqueMatrixList(
+	double widthInScene, 
+	double heightInScene, 
+	int widthByPixel, 
+	int heightByPixel, 
+	double widthBymm, 
+	double heightBymm, 
+	double renderzoneWidthBymm,
+	double renderzoneHeightBymm,
+	double thicknessBymm, 
+	double refractionIndex)
 {
 	wInScene = widthInScene;	//Decided by the WH ratio and heightInScene.
 	hInScene = heightInScene;	//Usually it would be 2. 
@@ -10,16 +31,20 @@ ObliqueProjectionMatrixList::ObliqueProjectionMatrixList(double widthInScene, do
 	hByPixel = heightByPixel;	//It is for the subimages, not the entire display zone.
 	wBymm = widthBymm;			//It is for the subimages, not the entire display zone.
 	hBymm = heightBymm;			//It is for the subimages, not the entire display zone.
+	rWidthBymm = renderzoneWidthBymm;
+	rHeightBymm = renderzoneHeightBymm;
 	tBymm = thicknessBymm;		//It is for the subimages, not the entire display zone.
 	refractionI = refractionIndex;
 
-	matrixList.resize(wByPixel);
+	projectionMatrixList.resize(wByPixel);
+	viewMatrixList.resize(wByPixel);
 	for (int i = 0; i < wByPixel; i++)
 	{
-		matrixList[i].resize(hByPixel);
+		projectionMatrixList[i].resize(hByPixel);
+		viewMatrixList[i].resize(hByPixel);
 		for (int j = 0; j < hByPixel; j++)
 		{
-			matrixList[i][j] = new irr::core::matrix4();
+			projectionMatrixList[i][j] = new irr::core::matrix4();
 			irr::core::matrix4* projectionMatrix = new irr::core::matrix4();
 			projectionMatrix->buildProjectionMatrixOrthoLH(wInScene, hInScene, -10000, 10000);
 			irr::core::matrix4* obliqueMatrix = new irr::core::matrix4();
@@ -37,20 +62,23 @@ ObliqueProjectionMatrixList::ObliqueProjectionMatrixList(double widthInScene, do
 				1,0,
 				0,0,0,1 };
 			obliqueMatrix->setM(valueOfMatrixElement);
-			matrixList[i][j]->setbyproduct(*projectionMatrix, *obliqueMatrix); //Something need to be aware of is that irr::core::matrix4::setbyproduct(A,B) will return the result of BA, rather than AB.
+			projectionMatrixList[i][j]->setbyproduct(*projectionMatrix, *obliqueMatrix); //Something need to be aware of is that irr::core::matrix4::setbyproduct(A,B) will return the result of BA, rather than AB.
 			// if (i%10==0&&j%10==0)
 			// {
 			// 	std::cout << "X=" << x << "\n" << "Y=" << y << "\n" << "h=" << h << "\n\n";
 			// }
+			
+			viewMatrixList[i][j] = new irr::core::matrix4();
+			viewMatrixList[i][j]->buildCameraLookAtMatrixLH(vector3df(0, 0, h), vector3df(0, 0, 10), vector3df(0, 1, 0));;
 		}
 	}
 }
 
-ObliqueProjectionMatrixList::~ObliqueProjectionMatrixList()
+ObliqueMatrixList::~ObliqueMatrixList()
 {
 }
 
-irr::core::matrix4 * ObliqueProjectionMatrixList::getProjectionByPixel(int x, int y)
+irr::core::matrix4 * ObliqueMatrixList::getProjectionMatrixByPixel(int x, int y)
 {
-	return matrixList[x][y];
+	return projectionMatrixList[x][y];
 }
