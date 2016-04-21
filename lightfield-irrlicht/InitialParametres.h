@@ -11,7 +11,7 @@ class DiaplayedObject
 public:
 	bool isEnabled;
 	// io::path * filePath;
-	char filepath[]= "../media/cube.dae";
+	char filepath[];
 
 	float scale;
 

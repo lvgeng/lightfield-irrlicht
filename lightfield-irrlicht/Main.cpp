@@ -276,19 +276,19 @@ int main()
 					videoDriver->draw2DRectangle(
 					SColor(255,255,255,255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 1,
-						0.5 * initialParametres->heightOfSubimageByPixel - 1,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
-						0.5 * initialParametres->heightOfSubimageByPixel + 1
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 2,
+						0.5 * initialParametres->heightOfSubimageByPixel - 2,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
+						0.5 * initialParametres->heightOfSubimageByPixel + 2
 						)
 					);
 					videoDriver->draw2DRectangle(
 					SColor(255,255,255,255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 1,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel - 1,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 1
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 2,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel - 2,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 2
 						)
 					);
 				}
@@ -297,19 +297,19 @@ int main()
 					videoDriver->draw2DRectangle(
 					SColor(255,255,255,255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel,
-						0.5 * initialParametres->heightOfSubimageByPixel,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
-						0.5 * initialParametres->heightOfSubimageByPixel + 1
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel -1,
+						0.5 * initialParametres->heightOfSubimageByPixel -1,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
+						0.5 * initialParametres->heightOfSubimageByPixel + 2
 						)
 					);
 					videoDriver->draw2DRectangle(
 					SColor(255,255,255,255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 1,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 1
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel -1,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel - 1,
+						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
+						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 2
 						)
 					);					
 				}
