@@ -26,7 +26,15 @@ void InitialParametres::defaultValuesInitializing()
 	cubePositionY = 0;
 	cubePositionZ = 0.3;
 
-	isFighterEnabled = false;
+	isBunnyEnabled = false;
+	bunnyScale = 1;
+	bunnyRotationX = 0;
+	bunnyRotationY = 0;
+	bunnyRotationZ = 0;
+	bunnyPositionX = 0;
+	bunnyPositionY = -0.2;
+	bunnyPositionZ = 0.3;
+
 	isTestSubjectSpinning = false;
 	isSimulating = false;
 	isSingleFrameRenderingAndQuitMode = false;
@@ -85,7 +93,17 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 				nodeIsCubeEnabled.append_child("cubePositionY").append_attribute("value") = cubePositionY;
 				nodeIsCubeEnabled.append_child("cubePositionZ").append_attribute("value") = cubePositionZ;
 
-			nodeFunctionSetting.append_child("isFighterEnabled").append_attribute("value") = isFighterEnabled;
+			pugi::xml_node nodeIsBunnyEnabled = nodeFunctionSetting.append_child("isBunnyEnabled");
+				nodeIsBunnyEnabled.append_attribute("value") = isBunnyEnabled;
+				nodeIsBunnyEnabled.append_child("bunnyScale").append_attribute("value") = bunnyScale;
+				nodeIsBunnyEnabled.append_child("bunnyRotationX").append_attribute("value") = bunnyRotationX;
+				nodeIsBunnyEnabled.append_child("bunnyRotationY").append_attribute("value") = bunnyRotationY;
+				nodeIsBunnyEnabled.append_child("bunnyRotationZ").append_attribute("value") = bunnyRotationZ;
+
+				nodeIsBunnyEnabled.append_child("bunnyPositionX").append_attribute("value") = bunnyPositionX;
+				nodeIsBunnyEnabled.append_child("bunnyPositionY").append_attribute("value") = bunnyPositionY;
+				nodeIsBunnyEnabled.append_child("bunnyPositionZ").append_attribute("value") = bunnyPositionZ;
+			//nodeFunctionSetting.append_child("isFighterEnabled").append_attribute("value") = isFighterEnabled;
 			nodeFunctionSetting.append_child("isTestSubjectSpinning").append_attribute("value") = isTestSubjectSpinning;
 			nodeFunctionSetting.append_child("isSimulating").append_attribute("value") = isSimulating;
 			nodeFunctionSetting.append_child("isSingleFrameRenderingAndQuitMode").append_attribute("value") = isSingleFrameRenderingAndQuitMode;
@@ -124,7 +142,15 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		cubePositionY = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubePositionY").attribute("value").as_float();
 		cubePositionZ = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubePositionZ").attribute("value").as_float();
 
-		isFighterEnabled = doc.child("Settings").child("functionSetting").child("isFighterEnabled").attribute("value").as_bool();
+		isBunnyEnabled = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").attribute("value").as_bool();
+		bunnyScale = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyScale").attribute("value").as_float();
+		bunnyRotationX = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyRotationX").attribute("value").as_float();
+		bunnyRotationY = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyRotationY").attribute("value").as_float();
+		bunnyRotationZ = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyRotationZ").attribute("value").as_float();
+		bunnyPositionX = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyPositionX").attribute("value").as_float();
+		bunnyPositionY = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyPositionY").attribute("value").as_float();
+		bunnyPositionZ = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyPositionZ").attribute("value").as_float();
+
 		isTestSubjectSpinning = doc.child("Settings").child("functionSetting").child("isTestSubjectSpinning").attribute("value").as_bool();
 		isSimulating = doc.child("Settings").child("functionSetting").child("isSimulating").attribute("value").as_bool();
 		isSingleFrameRenderingAndQuitMode = doc.child("Settings").child("functionSetting").child("isSingleFrameRenderingAndQuitMode").attribute("value").as_bool();

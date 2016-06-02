@@ -11,7 +11,7 @@ class DiaplayedObject
 public:
 	bool isEnabled;
 	// io::path * filePath;
-	char filepath[];
+	std::string filepath;
 
 	float scale;
 
@@ -57,7 +57,16 @@ public:
 	float cubePositionY;
 	float cubePositionZ;
 
-	bool isFighterEnabled;
+	bool isBunnyEnabled;
+
+	float bunnyScale;
+	float bunnyRotationX;
+	float bunnyRotationY;
+	float bunnyRotationZ;
+	float bunnyPositionX;
+	float bunnyPositionY;
+	float bunnyPositionZ;
+
 	bool isTestSubjectSpinning;
 	bool isSimulating;
 	bool isSingleFrameRenderingAndQuitMode;
