@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include "pugixml.hpp"
 
 using namespace std;
 using namespace chrono;
@@ -40,60 +41,48 @@ void savetex(ITexture *texture, std::string filename, IVideoDriver* videoDriver)
 
 int main(int argc, char* argv[])
 {
+	bool isTesting = true;
 	int widthOfDisplayZone = 800;
 	int heightOfDisplayZone = 600;
 	int widthOfSubimage = 20;
 	int heightOfSubimage = 20;
 	int widthOfHole = 2;
 	int heightOfHole = 2;
+
+	pugi::xml_document doc;
+	pugi::xml_parse_result resultConfigfile = doc.load_file("config.xml");
+	if (!resultConfigfile)
+	{
+		// add node with some name
+		pugi::xml_node nodeSetting = doc.append_child("Settings");
+		nodeSetting.append_child("isTesting").append_attribute("value") = isTesting;
+		nodeSetting.append_child("widthOfDisplayZone").append_attribute("value") = widthOfDisplayZone;
+		nodeSetting.append_child("heightOfDisplayZone").append_attribute("value") = heightOfDisplayZone;
+		nodeSetting.append_child("widthOfSubimage").append_attribute("value") = widthOfSubimage;
+		nodeSetting.append_child("heightOfSubimage").append_attribute("value") = heightOfSubimage;
+		nodeSetting.append_child("widthOfHole").append_attribute("value") = widthOfHole;
+		nodeSetting.append_child("heightOfHole").append_attribute("value") = heightOfHole;
+
+		doc.save_file("config.xml");
+	}
+	else
+	{
+		isTesting = doc.child("Settings").child("isTesting").attribute("value").as_bool();
+		isTesting = doc.child("Settings").child("widthOfDisplayZone").attribute("value").as_int();
+		isTesting = doc.child("Settings").child("heightOfDisplayZone").attribute("value").as_int();
+		isTesting = doc.child("Settings").child("widthOfSubimage").attribute("value").as_int();
+		isTesting = doc.child("Settings").child("heightOfSubimage").attribute("value").as_int();
+		isTesting = doc.child("Settings").child("widthOfHole").attribute("value").as_int();
+		isTesting = doc.child("Settings").child("heightOfHole").attribute("value").as_int();
+	}
+
 	video::SColor backgroundColor;
 	video::SColor dotColor;
 	std::string filename;
 
-	bool isTesting = true;
-
-	try
-	{
-		if (argc == 5 && std::string(argv[1])=="t")
-		{
-			isTesting = true;
-			widthOfDisplayZone = atoi(argv[2]);
-			widthOfSubimage = atoi(argv[3]);
-			heightOfSubimage = widthOfSubimage;
-			widthOfHole = atoi(argv[4]);
-			heightOfHole = widthOfHole;
-		}
-		else if (argc == 4 && atoi(argv[1]) != 0)
-		{
-			isTesting = false;
-			widthOfDisplayZone = atoi(argv[1]);
-			widthOfSubimage = atoi(argv[2]);
-			heightOfSubimage = widthOfSubimage;
-			widthOfHole = atoi(argv[3]);
-			heightOfHole = widthOfHole;
-		}
-		else
-		{
-			throw 0;
-		}
-	}
-	catch(int error)
-	{
-		cout<<"Usage:\n"<<"'./pattern-irrlicht t HEIGHT WIDTHOFHOLE' for testing images\n"<<"'./pattern-irrlicht HEIGHT WIDTHOFHOLE' for images for using\n";
-		return 0;
-	}
-
-
-
-
-	// Load the width and height.
-	heightOfDisplayZone = widthOfDisplayZone * 210 / 297;
-
-
-
 	if(isTesting)
 	{
-		backgroundColor = SColor(255,255,255,255);
+		backgroundColor = SColor(255,230,230,230);
 		dotColor = SColor(255,0,0,0);
 	}
 	else
@@ -188,5 +177,5 @@ int main(int argc, char* argv[])
 		filename = "Img-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
 	}
 	savetex(renderTargetTex,filename,videoDriver);
-  while(device->run());
+  //while(device->run());
 }
