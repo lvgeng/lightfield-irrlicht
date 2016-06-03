@@ -122,14 +122,14 @@ int main(int argc, char* argv[])
 	ISceneManager* sceneManager = device->getSceneManager();
 	IGUIEnvironment* guiEnvironment = device->getGUIEnvironment();
 
-  video::IRenderTarget* simulatorRenderTarget = 0;
-  video::ITexture* renderTargetTex = 0;
-  scene::ICameraSceneNode* fixedCam = 0;
-  renderTargetTex = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(widthOfDisplayZone,heightOfDisplayZone), "RTT1", video::ECF_A8R8G8B8);
-  video::ITexture* renderTargetDepth = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(widthOfDisplayZone,heightOfDisplayZone), "DepthStencil", video::ECF_D24S8);
-  simulatorRenderTarget = videoDriver->addRenderTarget();
-  simulatorRenderTarget->setTexture(renderTargetTex, renderTargetDepth);
-  videoDriver->setRenderTargetEx(simulatorRenderTarget, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(0));
+	video::IRenderTarget* simulatorRenderTarget = 0;
+	video::ITexture* renderTargetTex = 0;
+	scene::ICameraSceneNode* fixedCam = 0;
+	renderTargetTex = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(widthOfDisplayZone,heightOfDisplayZone), "RTT1", video::ECF_A8R8G8B8);
+	video::ITexture* renderTargetDepth = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(widthOfDisplayZone,heightOfDisplayZone), "DepthStencil", video::ECF_D24S8);
+	simulatorRenderTarget = videoDriver->addRenderTarget();
+	simulatorRenderTarget->setTexture(renderTargetTex, renderTargetDepth);
+	videoDriver->setRenderTargetEx(simulatorRenderTarget, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(0));
 
 
 	if(isTesting)
@@ -143,7 +143,6 @@ int main(int argc, char* argv[])
 	}
 
 	videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, backgroundColor);
-
 
 	for (int xSubimageCount = 0; xSubimageCount < widthOfDisplayZone / widthOfSubimage; xSubimageCount++)
 	{
@@ -173,8 +172,6 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
-	// videoDriver->setRenderTargetEx(0, 0, SColor(0));
-	// videoDriver->draw2DImage(renderTargetTex,	core::position2d< s32 >(100,100));
 
 	guiEnvironment->drawAll();	
 
@@ -190,17 +187,6 @@ int main(int argc, char* argv[])
 	{
 		filename = "Img-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
 	}
-
-  // IImage * screenshot = videoDriver->createScreenShot();
-	// videoDriver->writeImageToFile(screenshot, path(filename.c_str()));
-  // screenshot->drop();
-
-  // void* imageData = renderTargetTex->lock();
-  // IImage * image = videoDriver->createImageFromData(renderTargetTex->getColorFormat(), renderTargetTex->getSize(), imageData);
-  // videoDriver->writeImageToFile(image, path(filename.c_str()));
-
 	savetex(renderTargetTex,filename,videoDriver);
-
-  // savetex(renderTargetTex, filename, videoDriver);
   while(device->run());
 }

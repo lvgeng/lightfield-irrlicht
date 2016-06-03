@@ -6,24 +6,28 @@
 #include <irrlicht.h>
 #include "pugixml.hpp"
 
-class DiaplayedObject
-{
-public:
-	bool isEnabled;
-	// io::path * filePath;
-	std::string filepath;
+#include <chrono>
 
-	float scale;
+using namespace std;
+using namespace chrono;
 
-	float rotationX;
-	float rotationY;
-	float rotationZ;
-
-	float positionX;
-	float positionY;
-	float positionZ;
-
-};
+//class DiaplayedObject
+//{
+//public:
+//	bool isEnabled;
+//	std::string filepath;
+//
+//	float scale;
+//
+//	float rotationX;
+//	float rotationY;
+//	float rotationZ;
+//
+//	float positionX;
+//	float positionY;
+//	float positionZ;
+//
+//};
 
 class InitialParametres
 {
@@ -46,9 +50,8 @@ public:
 
 	//function setting
 	bool isCubeEnabled;
-
+	std::string cubeModelPath;
 	float cubeScale;
-
 	float cubeRotationX;
 	float cubeRotationY;
 	float cubeRotationZ;
@@ -58,7 +61,7 @@ public:
 	float cubePositionZ;
 
 	bool isBunnyEnabled;
-
+	std::string bunnyModelPath;
 	float bunnyScale;
 	float bunnyRotationX;
 	float bunnyRotationY;

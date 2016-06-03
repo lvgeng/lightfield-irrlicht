@@ -18,6 +18,7 @@ void InitialParametres::defaultValuesInitializing()
 	refractionIndexOfTransparentMaterial = 1.491756;
 	//The data comes from the data sheet is 1.491756. Do not change it if unnecessary.
 	isCubeEnabled = true;
+	cubeModelPath = "../media/cube.dae";
 	cubeScale = 0.4;
 	cubeRotationX = 0;
 	cubeRotationY = 30;
@@ -27,6 +28,7 @@ void InitialParametres::defaultValuesInitializing()
 	cubePositionZ = 0.3;
 
 	isBunnyEnabled = false;
+	bunnyModelPath = "../media/bun_zipper-blender.obj";
 	bunnyScale = 1;
 	bunnyRotationX = 0;
 	bunnyRotationY = 0;
@@ -84,25 +86,27 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		pugi::xml_node nodeFunctionSetting = nodeSettings.append_child("functionSetting");
 			pugi::xml_node nodeIsCubeEnabled = nodeFunctionSetting.append_child("isCubeEnabled");
 				nodeIsCubeEnabled.append_attribute("value") = isCubeEnabled;
-				nodeIsCubeEnabled.append_child("cubeScale").append_attribute("value") = cubeScale;
-				nodeIsCubeEnabled.append_child("cubeRotationX").append_attribute("value") = cubeRotationX;
-				nodeIsCubeEnabled.append_child("cubeRotationY").append_attribute("value") = cubeRotationY;
-				nodeIsCubeEnabled.append_child("cubeRotationZ").append_attribute("value") = cubeRotationZ;
+					nodeIsCubeEnabled.append_child("cubeModelPath").append_attribute("value") = cubeModelPath.c_str();
+					nodeIsCubeEnabled.append_child("cubeScale").append_attribute("value") = cubeScale;
+					nodeIsCubeEnabled.append_child("cubeRotationX").append_attribute("value") = cubeRotationX;
+					nodeIsCubeEnabled.append_child("cubeRotationY").append_attribute("value") = cubeRotationY;
+					nodeIsCubeEnabled.append_child("cubeRotationZ").append_attribute("value") = cubeRotationZ;
 
-				nodeIsCubeEnabled.append_child("cubePositionX").append_attribute("value") = cubePositionX;
-				nodeIsCubeEnabled.append_child("cubePositionY").append_attribute("value") = cubePositionY;
-				nodeIsCubeEnabled.append_child("cubePositionZ").append_attribute("value") = cubePositionZ;
+					nodeIsCubeEnabled.append_child("cubePositionX").append_attribute("value") = cubePositionX;
+					nodeIsCubeEnabled.append_child("cubePositionY").append_attribute("value") = cubePositionY;
+					nodeIsCubeEnabled.append_child("cubePositionZ").append_attribute("value") = cubePositionZ;
 
 			pugi::xml_node nodeIsBunnyEnabled = nodeFunctionSetting.append_child("isBunnyEnabled");
 				nodeIsBunnyEnabled.append_attribute("value") = isBunnyEnabled;
-				nodeIsBunnyEnabled.append_child("bunnyScale").append_attribute("value") = bunnyScale;
-				nodeIsBunnyEnabled.append_child("bunnyRotationX").append_attribute("value") = bunnyRotationX;
-				nodeIsBunnyEnabled.append_child("bunnyRotationY").append_attribute("value") = bunnyRotationY;
-				nodeIsBunnyEnabled.append_child("bunnyRotationZ").append_attribute("value") = bunnyRotationZ;
+					nodeIsBunnyEnabled.append_child("bunnyModelPath").append_attribute("value") = bunnyModelPath.c_str();
+					nodeIsBunnyEnabled.append_child("bunnyScale").append_attribute("value") = bunnyScale;
+					nodeIsBunnyEnabled.append_child("bunnyRotationX").append_attribute("value") = bunnyRotationX;
+					nodeIsBunnyEnabled.append_child("bunnyRotationY").append_attribute("value") = bunnyRotationY;
+					nodeIsBunnyEnabled.append_child("bunnyRotationZ").append_attribute("value") = bunnyRotationZ;
 
-				nodeIsBunnyEnabled.append_child("bunnyPositionX").append_attribute("value") = bunnyPositionX;
-				nodeIsBunnyEnabled.append_child("bunnyPositionY").append_attribute("value") = bunnyPositionY;
-				nodeIsBunnyEnabled.append_child("bunnyPositionZ").append_attribute("value") = bunnyPositionZ;
+					nodeIsBunnyEnabled.append_child("bunnyPositionX").append_attribute("value") = bunnyPositionX;
+					nodeIsBunnyEnabled.append_child("bunnyPositionY").append_attribute("value") = bunnyPositionY;
+					nodeIsBunnyEnabled.append_child("bunnyPositionZ").append_attribute("value") = bunnyPositionZ;
 			//nodeFunctionSetting.append_child("isFighterEnabled").append_attribute("value") = isFighterEnabled;
 			nodeFunctionSetting.append_child("isTestSubjectSpinning").append_attribute("value") = isTestSubjectSpinning;
 			nodeFunctionSetting.append_child("isSimulating").append_attribute("value") = isSimulating;
@@ -134,7 +138,8 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		refractionIndexOfTransparentMaterial = doc.child("Settings").child("realworldSetting").child("refractionIndexOfTransparentMaterial").attribute("value").as_double();
 
 		isCubeEnabled = doc.child("Settings").child("functionSetting").child("isCubeEnabled").attribute("value").as_bool();
-		cubeScale = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubeScale").attribute("value").as_float();
+		cubeModelPath = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubeModelPath").attribute("value").as_string();
+		cubeScale = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubeScale").attribute("value").as_float();		
 		cubeRotationX = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubeRotationX").attribute("value").as_float();
 		cubeRotationY = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubeRotationY").attribute("value").as_float();
 		cubeRotationZ = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubeRotationZ").attribute("value").as_float();
@@ -143,6 +148,7 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		cubePositionZ = doc.child("Settings").child("functionSetting").child("isCubeEnabled").child("cubePositionZ").attribute("value").as_float();
 
 		isBunnyEnabled = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").attribute("value").as_bool();
+		bunnyModelPath = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyModelPath").attribute("value").as_string();
 		bunnyScale = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyScale").attribute("value").as_float();
 		bunnyRotationX = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyRotationX").attribute("value").as_float();
 		bunnyRotationY = doc.child("Settings").child("functionSetting").child("isBunnyEnabled").child("bunnyRotationY").attribute("value").as_float();

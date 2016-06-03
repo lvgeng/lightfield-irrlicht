@@ -103,8 +103,9 @@ int main()
 
 	if (initialParametres->isCubeEnabled)
 	{
-		char filepath[] = "../media/cube.dae";
-		IAnimatedMesh* mesh = sceneManager->getMesh(filepath);
+		//char filepath[] = "../media/cube.dae";
+		//IAnimatedMesh* mesh = sceneManager->getMesh(filepath);
+		IAnimatedMesh* mesh = sceneManager->getMesh(initialParametres->cubeModelPath.c_str());
 		if (!mesh)
 		{
 			device->drop();
@@ -129,7 +130,7 @@ int main()
 
 	if (initialParametres->isBunnyEnabled)
 	{
-		IAnimatedMesh* mesh = sceneManager->getMesh("../media/bun_zipper-blender.obj");
+		IAnimatedMesh* mesh = sceneManager->getMesh(initialParametres->bunnyModelPath.c_str());
 		if (!mesh)
 		{
 			device->drop();
@@ -253,9 +254,9 @@ int main()
 				SColor(255, 0, 0, 0),
 				core::rect<s32>(
 					leftToRightCount * initialParametres->widthOfSubimageByPixel,
-					(initialParametres->ySubimageCountMax - 1) * initialParametres->heightOfSubimageByPixel,
+					(initialParametres->ySubimageCountMax) * initialParametres->heightOfSubimageByPixel,
 					(leftToRightCount + 1) * initialParametres->widthOfSubimageByPixel,
-					(initialParametres->ySubimageCountMax) * initialParametres->heightOfSubimageByPixel
+					(initialParametres->ySubimageCountMax + 1) * initialParametres->heightOfSubimageByPixel
 					)
 				);
 
@@ -264,19 +265,19 @@ int main()
 				videoDriver->draw2DRectangle(
 					SColor(255, 255, 255, 255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 2,
-						0.5 * initialParametres->heightOfSubimageByPixel - 2,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
-						0.5 * initialParametres->heightOfSubimageByPixel + 2
+						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel,
+						(0.5 - 0.05) * initialParametres->heightOfSubimageByPixel,
+						(leftToRightCount + 0.5 + 0.0) * initialParametres->widthOfSubimageByPixel,
+						(0.5 + 0.0) * initialParametres->heightOfSubimageByPixel
 						)
 					);
 				videoDriver->draw2DRectangle(
 					SColor(255, 255, 255, 255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 2,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel - 2,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 2
+						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel,
+						(initialParametres->ySubimageCountMax - 0.5 - 0.05) * initialParametres->heightOfSubimageByPixel,
+						(leftToRightCount + 0.5 + 0.0) * initialParametres->widthOfSubimageByPixel,
+						(initialParametres->ySubimageCountMax - 0.5 + 0.0) * initialParametres->heightOfSubimageByPixel
 						)
 					);
 			}
@@ -285,19 +286,19 @@ int main()
 				videoDriver->draw2DRectangle(
 					SColor(255, 255, 255, 255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 1,
-						0.5 * initialParametres->heightOfSubimageByPixel - 1,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
-						0.5 * initialParametres->heightOfSubimageByPixel + 2
+						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel + 1,
+						(0.5 - 0.05) * initialParametres->heightOfSubimageByPixel + 1,
+						(leftToRightCount + 0.5 + 0.05) * initialParametres->widthOfSubimageByPixel,
+						(0.5 + 0.05) * initialParametres->heightOfSubimageByPixel
 						)
 					);
 				videoDriver->draw2DRectangle(
 					SColor(255, 255, 255, 255),
 					core::rect<s32>(
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel - 1,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel - 1,
-						(leftToRightCount + 0.5) * initialParametres->widthOfSubimageByPixel + 2,
-						(initialParametres->ySubimageCountMax - 0.5) * initialParametres->heightOfSubimageByPixel + 2
+						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel + 1,
+						(initialParametres->ySubimageCountMax + 0.5 - 0.05) * initialParametres->heightOfSubimageByPixel + 1,
+						(leftToRightCount + 0.5 + 0.05) * initialParametres->widthOfSubimageByPixel,
+						(initialParametres->ySubimageCountMax + 0.5 + 0.05) * initialParametres->heightOfSubimageByPixel
 						)
 					);
 			}
