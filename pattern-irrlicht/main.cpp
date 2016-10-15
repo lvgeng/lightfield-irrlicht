@@ -68,12 +68,12 @@ int main(int argc, char* argv[])
 	else
 	{
 		isTesting = doc.child("Settings").child("isTesting").attribute("value").as_bool();
-		isTesting = doc.child("Settings").child("widthOfDisplayZone").attribute("value").as_int();
-		isTesting = doc.child("Settings").child("heightOfDisplayZone").attribute("value").as_int();
-		isTesting = doc.child("Settings").child("widthOfSubimage").attribute("value").as_int();
-		isTesting = doc.child("Settings").child("heightOfSubimage").attribute("value").as_int();
-		isTesting = doc.child("Settings").child("widthOfHole").attribute("value").as_int();
-		isTesting = doc.child("Settings").child("heightOfHole").attribute("value").as_int();
+		widthOfDisplayZone = doc.child("Settings").child("widthOfDisplayZone").attribute("value").as_int();
+		heightOfDisplayZone = doc.child("Settings").child("heightOfDisplayZone").attribute("value").as_int();
+		widthOfSubimage = doc.child("Settings").child("widthOfSubimage").attribute("value").as_int();
+		heightOfSubimage = doc.child("Settings").child("heightOfSubimage").attribute("value").as_int();
+		widthOfHole = doc.child("Settings").child("widthOfHole").attribute("value").as_int();
+		heightOfHole = doc.child("Settings").child("heightOfHole").attribute("value").as_int();
 	}
 
 	video::SColor backgroundColor;

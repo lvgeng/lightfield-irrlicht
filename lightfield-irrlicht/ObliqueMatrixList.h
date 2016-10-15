@@ -8,8 +8,8 @@ class ObliqueMatrixList
 private:
 	double wInScene;
 	double hInScene;
-	double wByPixel;
-	double hByPixel;
+	int wByPixel;
+	int hByPixel;
 	double wBymm;
 	double hBymm;
 	double rWidthBymm;
