@@ -101,56 +101,82 @@ int main()
 	//===========================================================================================================================
 	//===========================================================================================================================
 
-	if (initialParametres->isCubeEnabled)
+	if (initialParametres->isMeshOneEnabled)
 	{
 		//char filepath[] = "../media/cube.dae";
 		//IAnimatedMesh* mesh = sceneManager->getMesh(filepath);
-		IAnimatedMesh* mesh = sceneManager->getMesh(initialParametres->cubeModelPath.c_str());
+		IAnimatedMesh* mesh = sceneManager->getMesh(initialParametres->meshOneModelPath.c_str());
 		if (!mesh)
 		{
 			device->drop();
 			return 1;
 		}
-		IAnimatedMeshSceneNode* cubeModel = sceneManager->addAnimatedMeshSceneNode(mesh);
-		if (cubeModel)
+		IAnimatedMeshSceneNode* meshOneModel = sceneManager->addAnimatedMeshSceneNode(mesh);
+		if (meshOneModel)
 		{
-			cubeModel->setMaterialFlag(EMF_LIGHTING, true);
-			cubeModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
-			cubeModel->setScale(vector3df(initialParametres->cubeScale, initialParametres->cubeScale, initialParametres->cubeScale));
-			cubeModel->setRotation(vector3df(initialParametres->cubeRotationX, initialParametres->cubeRotationY, initialParametres->cubeRotationZ));
-			cubeModel->setPosition(vector3df(initialParametres->cubePositionX, initialParametres->cubePositionY, initialParametres->cubePositionZ));
+			meshOneModel->setMaterialFlag(EMF_LIGHTING, true);
+			meshOneModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
+			meshOneModel->setScale(vector3df(initialParametres->meshOneScale, initialParametres->meshOneScale, initialParametres->meshOneScale));
+			meshOneModel->setRotation(vector3df(initialParametres->meshOneRotationX, initialParametres->meshOneRotationY, initialParametres->meshOneRotationZ));
+			meshOneModel->setPosition(vector3df(initialParametres->meshOnePositionX, initialParametres->meshOnePositionY, initialParametres->meshOnePositionZ));
 		}
 		if (initialParametres->isTestSubjectSpinning)
 		{
 			scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
 				core::vector3df(0, 0.3f, 0));
-			cubeModel->addAnimator(anim);
+			meshOneModel->addAnimator(anim);
 		}
 	}
 
-	if (initialParametres->isBunnyEnabled)
+	if (initialParametres->isMeshTwoEnabled)
 	{
-		IAnimatedMesh* mesh = sceneManager->getMesh(initialParametres->bunnyModelPath.c_str());
+		IAnimatedMesh* mesh = sceneManager->getMesh(initialParametres->meshTwoModelPath.c_str());
 		if (!mesh)
 		{
 			device->drop();
 			return 1;
 		}
-		IAnimatedMeshSceneNode* bunnyModel = sceneManager->addAnimatedMeshSceneNode(mesh);
-		if (bunnyModel)
+		IAnimatedMeshSceneNode* meshTwoModel = sceneManager->addAnimatedMeshSceneNode(mesh);
+		if (meshTwoModel)
 		{
-			bunnyModel->setMaterialFlag(EMF_LIGHTING, true);
-			bunnyModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
+			meshTwoModel->setMaterialFlag(EMF_LIGHTING, true);
+			meshTwoModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
 
-			bunnyModel->setScale(vector3df(initialParametres->bunnyScale, initialParametres->bunnyScale, initialParametres->bunnyScale));
-			bunnyModel->setRotation(vector3df(initialParametres->bunnyRotationX, initialParametres->bunnyRotationY, initialParametres->bunnyRotationZ));
-			bunnyModel->setPosition(vector3df(initialParametres->bunnyPositionX, initialParametres->bunnyPositionY, initialParametres->bunnyPositionZ));
+			meshTwoModel->setScale(vector3df(initialParametres->meshTwoScale, initialParametres->meshTwoScale, initialParametres->meshTwoScale));
+			meshTwoModel->setRotation(vector3df(initialParametres->meshTwoRotationX, initialParametres->meshTwoRotationY, initialParametres->meshTwoRotationZ));
+			meshTwoModel->setPosition(vector3df(initialParametres->meshTwoPositionX, initialParametres->meshTwoPositionY, initialParametres->meshTwoPositionZ));
 		}
 		if (initialParametres->isTestSubjectSpinning)
 		{
 			scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
 				core::vector3df(0, 0.3f, 0));
-			bunnyModel->addAnimator(anim);
+			meshTwoModel->addAnimator(anim);
+		}
+	}
+
+	if (initialParametres->isMeshThreeEnabled)
+	{
+		IAnimatedMesh* mesh = sceneManager->getMesh(initialParametres->meshThreeModelPath.c_str());
+		if (!mesh)
+		{
+			device->drop();
+			return 1;
+		}
+		IAnimatedMeshSceneNode* meshThreeModel = sceneManager->addAnimatedMeshSceneNode(mesh);
+		if (meshThreeModel)
+		{
+			meshThreeModel->setMaterialFlag(EMF_LIGHTING, true);
+			meshThreeModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
+
+			meshThreeModel->setScale(vector3df(initialParametres->meshThreeScale, initialParametres->meshThreeScale, initialParametres->meshThreeScale));
+			meshThreeModel->setRotation(vector3df(initialParametres->meshThreeRotationX, initialParametres->meshThreeRotationY, initialParametres->meshThreeRotationZ));
+			meshThreeModel->setPosition(vector3df(initialParametres->meshThreePositionX, initialParametres->meshThreePositionY, initialParametres->meshThreePositionZ));
+		}
+		if (initialParametres->isTestSubjectSpinning)
+		{
+			scene::ISceneNodeAnimator* anim = sceneManager->createRotationAnimator(
+				core::vector3df(0, 0.3f, 0));
+			meshThreeModel->addAnimator(anim);
 		}
 	}
 
@@ -160,7 +186,8 @@ int main()
 	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
 	sceneManager->addLightSceneNode(0, core::vector3df(200, -200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
 	sceneManager->addLightSceneNode(0, core::vector3df(-200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
-	sceneManager->setAmbientLight(video::SColorf(0.5f, 0.5f, 0.5f));
+	//sceneManager->setAmbientLight(video::SColorf(0.5f, 0.5f, 0.5f));
+	sceneManager->setAmbientLight(video::SColorf(1.0f, 1.0f, 1.0f));
 	//Setting the Affector and the testData will change the render parametres.
 	matrix4* viewProjectionMatrixAffector = new matrix4();
 	viewProjectionMatrixAffector->buildCameraLookAtMatrixLH(vector3df(0, 0, 0), vector3df(0, 0, 10), vector3df(0, 1, 0));
@@ -347,7 +374,8 @@ int main()
 		}
 		else
 		{
-			videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(0, 0),
+			videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(initialParametres->xOffsetByPixel, initialParametres->yOffsetByPixel),
+			//videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(0, 0),
 				core::rect<s32>(
 					0,
 					0,

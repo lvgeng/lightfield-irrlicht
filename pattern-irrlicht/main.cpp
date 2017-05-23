@@ -41,13 +41,22 @@ void savetex(ITexture *texture, std::string filename, IVideoDriver* videoDriver)
 
 int main(int argc, char* argv[])
 {
-	bool isTesting = true;
+	bool isTesting = false;
+	bool isFrame = false;
 	int widthOfDisplayZone = 800;
 	int heightOfDisplayZone = 600;
 	int widthOfSubimage = 20;
 	int heightOfSubimage = 20;
 	int widthOfHole = 2;
 	int heightOfHole = 2;
+
+	int widthOfFrameExternal = 20;
+	int heightOfFrameExternal = 20;
+	int widthOfFrameInner = 18;
+	int heightOfFrameInner = 18;
+
+	int xOffset = 0;
+	int yOffset = 0;
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result resultConfigfile = doc.load_file("config.xml");
@@ -56,6 +65,7 @@ int main(int argc, char* argv[])
 		// add node with some name
 		pugi::xml_node nodeSetting = doc.append_child("Settings");
 		nodeSetting.append_child("isTesting").append_attribute("value") = isTesting;
+		nodeSetting.append_child("isFrame").append_attribute("value") = isFrame;
 		nodeSetting.append_child("widthOfDisplayZone").append_attribute("value") = widthOfDisplayZone;
 		nodeSetting.append_child("heightOfDisplayZone").append_attribute("value") = heightOfDisplayZone;
 		nodeSetting.append_child("widthOfSubimage").append_attribute("value") = widthOfSubimage;
@@ -63,17 +73,35 @@ int main(int argc, char* argv[])
 		nodeSetting.append_child("widthOfHole").append_attribute("value") = widthOfHole;
 		nodeSetting.append_child("heightOfHole").append_attribute("value") = heightOfHole;
 
+		nodeSetting.append_child("widthOfFrameExternal").append_attribute("value") = widthOfFrameExternal;
+		nodeSetting.append_child("heightOfFrameExternal").append_attribute("value") = heightOfFrameExternal;
+		nodeSetting.append_child("widthOfFrameInner").append_attribute("value") = widthOfFrameInner;
+		nodeSetting.append_child("heightOfFrameInner").append_attribute("value") = heightOfFrameInner;
+
+		nodeSetting.append_child("xOffset").append_attribute("value") = xOffset;
+		nodeSetting.append_child("yOffset").append_attribute("value") = yOffset;
+
+
 		doc.save_file("config.xml");
 	}
 	else
 	{
 		isTesting = doc.child("Settings").child("isTesting").attribute("value").as_bool();
+		isFrame = doc.child("Settings").child("isFrame").attribute("value").as_bool();
 		widthOfDisplayZone = doc.child("Settings").child("widthOfDisplayZone").attribute("value").as_int();
 		heightOfDisplayZone = doc.child("Settings").child("heightOfDisplayZone").attribute("value").as_int();
 		widthOfSubimage = doc.child("Settings").child("widthOfSubimage").attribute("value").as_int();
 		heightOfSubimage = doc.child("Settings").child("heightOfSubimage").attribute("value").as_int();
 		widthOfHole = doc.child("Settings").child("widthOfHole").attribute("value").as_int();
 		heightOfHole = doc.child("Settings").child("heightOfHole").attribute("value").as_int();
+
+		widthOfFrameExternal = doc.child("Settings").child("widthOfFrameExternal").attribute("value").as_int();
+		heightOfFrameExternal = doc.child("Settings").child("heightOfFrameExternal").attribute("value").as_int();
+		widthOfFrameInner = doc.child("Settings").child("widthOfFrameInner").attribute("value").as_int();
+		heightOfFrameInner = doc.child("Settings").child("heightOfFrameInner").attribute("value").as_int();
+
+		xOffset = doc.child("Settings").child("xOffset").attribute("value").as_int();
+		yOffset = doc.child("Settings").child("yOffset").attribute("value").as_int();
 	}
 
 	video::SColor backgroundColor;
@@ -89,6 +117,11 @@ int main(int argc, char* argv[])
 	{
 		backgroundColor = SColor(255,0,0,0);
 		dotColor = SColor(255,255,255,255);
+		if (isFrame)
+		{
+			backgroundColor = SColor(255, 255, 255, 255);
+			dotColor = SColor(255, 0, 0, 0);
+		}
 	}
 
 	IrrlichtDevice *device =
@@ -129,38 +162,106 @@ int main(int argc, char* argv[])
 		displayStr += " Height = ";
 		displayStr += heightOfDisplayZone;
 		informationTextBox->setText(displayStr.c_str());
-	}
 
-	videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, backgroundColor);
-
-	for (int xSubimageCount = 0; xSubimageCount < widthOfDisplayZone / widthOfSubimage; xSubimageCount++)
-	{
-		for (int ySubimageCount = 0; ySubimageCount < heightOfDisplayZone / heightOfSubimage; ySubimageCount++)
+		videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, backgroundColor);
+		for (int xSubimageCount = 0; xSubimageCount < widthOfDisplayZone / widthOfSubimage; xSubimageCount++)
 		{
-			videoDriver->draw2DRectangle(
-				dotColor,
-				core::rect<s32>(
-					(xSubimageCount + 0.5) * widthOfSubimage - widthOfHole / 2,
-					(ySubimageCount + 0.5) * heightOfSubimage - heightOfHole / 2,
-					(xSubimageCount + 0.5) * widthOfSubimage + widthOfHole / 2 ,
-					(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole / 2
-					)
-				);
-
-			if (isTesting && xSubimageCount % 5 == 0 && ySubimageCount % 5 == 0)
+			for (int ySubimageCount = 0; ySubimageCount < heightOfDisplayZone / heightOfSubimage; ySubimageCount++)
 			{
-				IGUIStaticText* coordinatesInformationTextBox = guiEnvironment->addStaticText(
-					L"this is text",
-				rect<s32>(xSubimageCount * widthOfSubimage, ySubimageCount * heightOfSubimage, (xSubimageCount + 3) * widthOfSubimage, (ySubimageCount + 3) * heightOfSubimage), true);
-				core::stringw displayStr = L"(";
-				displayStr += xSubimageCount * widthOfSubimage;
-				displayStr += ", ";
-				displayStr += ySubimageCount * heightOfSubimage;
-				displayStr += ")";
-				coordinatesInformationTextBox->setText(displayStr.c_str());
+				videoDriver->draw2DRectangle(
+					dotColor,
+					core::rect<s32>(
+						(xSubimageCount + 0.5) * widthOfSubimage - widthOfHole / 2 + xOffset,
+						(ySubimageCount + 0.5) * heightOfSubimage - heightOfHole / 2 + yOffset,
+						(xSubimageCount + 0.5) * widthOfSubimage + widthOfHole / 2 + xOffset,
+						(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole / 2 + yOffset
+						)
+					);
+
+				if (xSubimageCount % 5 == 0 && ySubimageCount % 5 == 0)
+				{
+					IGUIStaticText* coordinatesInformationTextBox = guiEnvironment->addStaticText(
+						L"this is text",
+						rect<s32>(xSubimageCount * widthOfSubimage, ySubimageCount * heightOfSubimage, (xSubimageCount + 3) * widthOfSubimage, (ySubimageCount + 3) * heightOfSubimage), true);
+					core::stringw displayStr = L"(";
+					displayStr += xSubimageCount * widthOfSubimage;
+					displayStr += ", ";
+					displayStr += ySubimageCount * heightOfSubimage;
+					displayStr += ")";
+					coordinatesInformationTextBox->setText(displayStr.c_str());
+				}
 			}
 		}
 	}
+	else {
+		if (!isFrame) {
+			videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, backgroundColor);
+			if (widthOfHole > 1 && heightOfHole > 1) {
+				for (int xSubimageCount = 0; xSubimageCount < (widthOfDisplayZone - xOffset) / widthOfSubimage; xSubimageCount++)
+				{
+					for (int ySubimageCount = 0; ySubimageCount < (heightOfDisplayZone - yOffset) / heightOfSubimage; ySubimageCount++)
+					{
+						videoDriver->draw2DRectangle(
+							dotColor,
+							core::rect<s32>(
+								(xSubimageCount + 0.5) * widthOfSubimage - widthOfHole / 2 + xOffset,
+								(ySubimageCount + 0.5) * heightOfSubimage - heightOfHole / 2 + yOffset,
+								(xSubimageCount + 0.5) * widthOfSubimage + widthOfHole / 2 + xOffset,
+								(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole / 2 + yOffset
+								)
+							);
+					}
+				}
+			}
+			else {
+				for (int xSubimageCount = 0; xSubimageCount < (widthOfDisplayZone - xOffset) / widthOfSubimage; xSubimageCount++)
+				{
+					for (int ySubimageCount = 0; ySubimageCount < (heightOfDisplayZone - yOffset) / heightOfSubimage; ySubimageCount++)
+					{
+						videoDriver->draw2DRectangle(
+							dotColor,
+							core::rect<s32>(
+								(xSubimageCount + 0.5) * widthOfSubimage + xOffset,
+								(ySubimageCount + 0.5) * heightOfSubimage + yOffset,
+								(xSubimageCount + 0.5) * widthOfSubimage + widthOfHole + xOffset,
+								(ySubimageCount + 0.5) * heightOfSubimage + heightOfHole + yOffset
+								)
+							);
+					}
+				}
+			}
+			
+		}
+		else {
+			videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, backgroundColor);
+			for (int xSubimageCount = 0; xSubimageCount < (widthOfDisplayZone - xOffset) / widthOfSubimage; xSubimageCount++)
+			{
+				for (int ySubimageCount = 0; ySubimageCount < (heightOfDisplayZone - yOffset) / heightOfSubimage; ySubimageCount++)
+				{
+					videoDriver->draw2DRectangle(
+						dotColor,
+						core::rect<s32>(
+							(xSubimageCount + 0.5) * widthOfSubimage - widthOfFrameExternal / 2 + xOffset,
+							(ySubimageCount + 0.5) * heightOfSubimage - heightOfFrameExternal / 2 + yOffset,
+							(xSubimageCount + 0.5) * widthOfSubimage + widthOfFrameExternal / 2 + xOffset,
+							(ySubimageCount + 0.5) * heightOfSubimage + heightOfFrameExternal / 2 + yOffset
+							)
+						);
+					videoDriver->draw2DRectangle(
+						backgroundColor,
+						core::rect<s32>(
+							(xSubimageCount + 0.5) * widthOfSubimage - widthOfFrameInner / 2 + xOffset,
+							(ySubimageCount + 0.5) * heightOfSubimage - heightOfFrameInner / 2 + yOffset,
+							(xSubimageCount + 0.5) * widthOfSubimage + widthOfFrameInner / 2 + xOffset,
+							(ySubimageCount + 0.5) * heightOfSubimage + heightOfFrameInner / 2 + yOffset
+							)
+						);
+				}
+			}
+		}
+		
+	}
+
 
 	guiEnvironment->drawAll();	
 
@@ -168,14 +269,16 @@ int main(int argc, char* argv[])
 	videoDriver->draw2DImage(renderTargetTex,	core::position2d< s32 >(100,100));
 	videoDriver->endScene();
 
+	filename = "LB-";
 	if(isTesting)
 	{
-		filename = "Img-testing-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
+		filename = "LB-testing-";
 	}
-	else
+	if(isFrame)
 	{
-		filename = "Img-" + to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
+		filename = "LB-Frame-";
 	}
+	filename += to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
 	savetex(renderTargetTex,filename,videoDriver);
   //while(device->run());
 }

@@ -38,6 +38,9 @@ public:
 	bool isFullscreen;
 	int widthOfSubimageByPixel;
 	int heightOfSubimageByPixel;
+
+	int xOffsetByPixel;
+	int yOffsetByPixel;
 	//real world setting
 	double widthOfSubimageBymm;
 	double heightOfSubimageBymm;
@@ -49,30 +52,50 @@ public:
 	double refractionIndexOfTransparentMaterial;
 
 	//function setting
-	bool isCubeEnabled;
-	std::string cubeModelPath;
-	float cubeScale;
-	float cubeRotationX;
-	float cubeRotationY;
-	float cubeRotationZ;
+	int backgroundColorR;
+	int backgroundColorG;
+	int backgroundColorB;
 
-	float cubePositionX;
-	float cubePositionY;
-	float cubePositionZ;
+	bool isMeshOneEnabled;
+	std::string meshOneModelPath;
+	float meshOneScale;
+	float meshOneRotationX;
+	float meshOneRotationY;
+	float meshOneRotationZ;
 
-	bool isBunnyEnabled;
-	std::string bunnyModelPath;
-	float bunnyScale;
-	float bunnyRotationX;
-	float bunnyRotationY;
-	float bunnyRotationZ;
-	float bunnyPositionX;
-	float bunnyPositionY;
-	float bunnyPositionZ;
+	float meshOnePositionX;
+	float meshOnePositionY;
+	float meshOnePositionZ;
+
+	bool isMeshTwoEnabled;
+	std::string meshTwoModelPath;
+	float meshTwoScale;
+	float meshTwoRotationX;
+	float meshTwoRotationY;
+	float meshTwoRotationZ;
+	float meshTwoPositionX;
+	float meshTwoPositionY;
+	float meshTwoPositionZ;
+
+	bool isMeshThreeEnabled;
+	std::string meshThreeModelPath;
+	float meshThreeScale;
+	float meshThreeRotationX;
+	float meshThreeRotationY;
+	float meshThreeRotationZ;
+	float meshThreePositionX;
+	float meshThreePositionY;
+	float meshThreePositionZ;
 
 	bool isTestSubjectSpinning;
 	bool isSimulating;
 	bool isSingleFrameRenderingAndQuitMode;
+
+	bool isLightField;
+	float virtualCameraPosX;
+	float virtualCameraPosY;
+	float virtualCameraPosZ;
+	float virtualCameraFOV;
 
 	//Calculated.
 	double widthOfProjectionPanelInScene;
