@@ -88,7 +88,8 @@ public:
 	float meshThreePositionZ;
 
 	bool isTestSubjectSpinning;
-	bool isSimulating;
+	bool isAimmingAssistantEnabled;
+	//bool isSimulating;
 	bool isSingleFrameRenderingAndQuitMode;
 
 	bool isLightField;

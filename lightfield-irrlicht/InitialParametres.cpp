@@ -55,14 +55,15 @@ void InitialParametres::defaultValuesInitializing()
 	meshThreePositionZ = 0.3;
 
 	isTestSubjectSpinning = false;
-	isSimulating = false;
+	isAimmingAssistantEnabled = false;
+	//isSimulating = false;
 	isSingleFrameRenderingAndQuitMode = false;
 
 	isLightField = true;
 
 	virtualCameraPosX = 0.0;
 	virtualCameraPosY = 0.0;
-	virtualCameraPosZ = 1500.0;
+	virtualCameraPosZ = -1500.0/4;
 	virtualCameraFOV = 90.0;
 
 	widthOfSubimageBymm = widthOfRenderzoneBymm*widthOfSubimageByPixel/widthOfRenderzoneByPixel;
@@ -157,11 +158,12 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 					nodeIsMeshThreeEnabled.append_child("meshThreePositionZ").append_attribute("value") = meshThreePositionZ;
 			//nodeFunctionSetting.append_child("isFighterEnabled").append_attribute("value") = isFighterEnabled;
 			nodeFunctionSetting.append_child("isTestSubjectSpinning").append_attribute("value") = isTestSubjectSpinning;
-			nodeFunctionSetting.append_child("isSimulating").append_attribute("value") = isSimulating;
+			nodeFunctionSetting.append_child("isAimmingAssistantEnabled").append_attribute("value") = isAimmingAssistantEnabled;
+			//nodeFunctionSetting.append_child("isSimulating").append_attribute("value") = isSimulating;
 			nodeFunctionSetting.append_child("isSingleFrameRenderingAndQuitMode").append_attribute("value") = isSingleFrameRenderingAndQuitMode;
 
-			pugi::xml_node nodeIsLightField = nodeFunctionSetting.append_child("isMeshThreeEnabled");
-				nodeFunctionSetting.append_child("isLightField").append_attribute("value") = isLightField;
+			pugi::xml_node nodeIsLightField = nodeFunctionSetting.append_child("isLightField");
+				nodeIsLightField.append_attribute("value") = isLightField;
 					nodeIsLightField.append_child("virtualCameraPosX").append_attribute("value") = virtualCameraPosX;
 					nodeIsLightField.append_child("virtualCameraPosY").append_attribute("value") = virtualCameraPosY;
 					nodeIsLightField.append_child("virtualCameraPosZ").append_attribute("value") = virtualCameraPosZ;
@@ -228,7 +230,8 @@ InitialParametres::InitialParametres(char* xmlConfigFilePath)
 		meshThreePositionZ = doc.child("Settings").child("functionSetting").child("isMeshThreeEnabled").child("meshThreePositionZ").attribute("value").as_float();
 
 		isTestSubjectSpinning = doc.child("Settings").child("functionSetting").child("isTestSubjectSpinning").attribute("value").as_bool();
-		isSimulating = doc.child("Settings").child("functionSetting").child("isSimulating").attribute("value").as_bool();
+		isAimmingAssistantEnabled = doc.child("Settings").child("functionSetting").child("isAimmingAssistantEnabled").attribute("value").as_bool();
+		//isSimulating = doc.child("Settings").child("functionSetting").child("isSimulating").attribute("value").as_bool();
 		isSingleFrameRenderingAndQuitMode = doc.child("Settings").child("functionSetting").child("isSingleFrameRenderingAndQuitMode").attribute("value").as_bool();
 		
 		isLightField = doc.child("Settings").child("functionSetting").child("isLightField").attribute("value").as_bool();

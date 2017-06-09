@@ -278,7 +278,7 @@ int main(int argc, char* argv[])
 	{
 		filename = "LB-Frame-";
 	}
-	filename += to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + ".png";
+	filename += to_string(widthOfDisplayZone) + "-" + to_string(heightOfDisplayZone) + "-" + to_string(widthOfSubimage) + "-" + to_string(heightOfSubimage) + "-" + to_string(widthOfHole) + "-" + to_string(heightOfHole) + ".png";
 	savetex(renderTargetTex,filename,videoDriver);
   //while(device->run());
 }

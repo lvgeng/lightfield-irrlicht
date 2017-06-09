@@ -3,7 +3,7 @@
 #include "ObliqueMatrixList.h"
 #include "InitialParametres.h"
 #include "EventReceiverForKeyboard.h"
-#include "PlaneSimulator.h"
+//#include "PlaneSimulator.h"
 
 
 #include <iostream>
@@ -83,8 +83,11 @@ int main()
 	video::ITexture* renderTargetDepth = videoDriver->addRenderTargetTexture(core::dimension2d<u32>(initialParametres->widthOfRenderzoneByPixel, initialParametres->heightOfRenderzoneByPixel), "DepthStencil", video::ECF_D24S8);
 	renderTargetAllSubimages = videoDriver->addRenderTarget();
 	renderTargetAllSubimages->setTexture(renderTargetTex, renderTargetDepth);
-
+	
 	device->setEventReceiver(new EventReceiverForKeyboard(device, renderTargetTex));
+
+	//Set shadow color.
+	sceneManager->setShadowColor(video::SColor(90, 0, 0, 0));
 
 	if (!device)
 	{
@@ -94,7 +97,6 @@ int main()
 	//Set the caption of the window to some nice text. Note that there is an
 	//'L' in front of the string. The Irrlicht Engine uses wide character
 	//strings when displaying text.
-
 
 
 	//===========================================================================================================================
@@ -115,7 +117,9 @@ int main()
 		if (meshOneModel)
 		{
 			meshOneModel->setMaterialFlag(EMF_LIGHTING, true);
+			//meshOneModel->addShadowVolumeSceneNode();
 			meshOneModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
+
 			meshOneModel->setScale(vector3df(initialParametres->meshOneScale, initialParametres->meshOneScale, initialParametres->meshOneScale));
 			meshOneModel->setRotation(vector3df(initialParametres->meshOneRotationX, initialParametres->meshOneRotationY, initialParametres->meshOneRotationZ));
 			meshOneModel->setPosition(vector3df(initialParametres->meshOnePositionX, initialParametres->meshOnePositionY, initialParametres->meshOnePositionZ));
@@ -140,6 +144,7 @@ int main()
 		if (meshTwoModel)
 		{
 			meshTwoModel->setMaterialFlag(EMF_LIGHTING, true);
+			//meshTwoModel->addShadowVolumeSceneNode();
 			meshTwoModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
 
 			meshTwoModel->setScale(vector3df(initialParametres->meshTwoScale, initialParametres->meshTwoScale, initialParametres->meshTwoScale));
@@ -166,6 +171,7 @@ int main()
 		if (meshThreeModel)
 		{
 			meshThreeModel->setMaterialFlag(EMF_LIGHTING, true);
+			//meshThreeModel->addShadowVolumeSceneNode();
 			meshThreeModel->setMaterialFlag(EMF_NORMALIZE_NORMALS, true);
 
 			meshThreeModel->setScale(vector3df(initialParametres->meshThreeScale, initialParametres->meshThreeScale, initialParametres->meshThreeScale));
@@ -179,23 +185,81 @@ int main()
 			meshThreeModel->addAnimator(anim);
 		}
 	}
+	//If the light field mode is disabled, draw a frame to show the relative location of the objectes and the display.
+	if (!initialParametres->isLightField)
+	{
+		scene::ISceneNode* nodeTopLine = sceneManager->addCubeSceneNode(1.0, 0, -1,
+			core::vector3df(0, 1, 0),
+			core::vector3df(0, 0, 0),
+			core::vector3df((float)(initialParametres->widthOfRenderzoneByPixel) / (float)(initialParametres->heightOfRenderzoneByPixel) * 2, 0.01, 0.01));
+		scene::ISceneNode* nodeBottomLine = sceneManager->addCubeSceneNode(1.0, 0, -1,
+			core::vector3df(0, -1, 0),
+			core::vector3df(0, 0, 0),
+			core::vector3df((float)(initialParametres->widthOfRenderzoneByPixel) / (float)(initialParametres->heightOfRenderzoneByPixel) * 2, 0.01, 0.01));
+		scene::ISceneNode* nodeLeftLine = sceneManager->addCubeSceneNode(1.0, 0, -1,
+			core::vector3df(-(float)(initialParametres->widthOfRenderzoneByPixel) / (float)(initialParametres->heightOfRenderzoneByPixel), 0, 0),
+			core::vector3df(0, 0, 0),
+			core::vector3df(0.01, 2, 0.01));
+		scene::ISceneNode* nodeRightLine = sceneManager->addCubeSceneNode(1.0, 0, -1,
+			core::vector3df((float)(initialParametres->widthOfRenderzoneByPixel) / (float)(initialParametres->heightOfRenderzoneByPixel), 0, 0),
+			core::vector3df(0, 0, 0),
+			core::vector3df(0.01, 2, 0.01));
+		//nodeTopLine->setMaterialFlag(EMF_LIGHTING, true);
+		//nodeTopLine->getMaterial(0).DiffuseColor.set(255, 255, 0, 0);
+		//nodeTopLine->getMaterial(0).AmbientColor.set(255, 255, 0, 0);
+		//nodeTopLine->getMaterial(0).SpecularColor.set(255, 255, 0, 0);
 
+	}
 
 	//Add a light source to make the cube visable.
-	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
-	sceneManager->addLightSceneNode(0, core::vector3df(200, 200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
-	sceneManager->addLightSceneNode(0, core::vector3df(200, -200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
-	sceneManager->addLightSceneNode(0, core::vector3df(-200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
-	//sceneManager->setAmbientLight(video::SColorf(0.5f, 0.5f, 0.5f));
-	sceneManager->setAmbientLight(video::SColorf(1.0f, 1.0f, 1.0f));
+	sceneManager->addLightSceneNode(0, core::vector3df(-200, 100, -50), video::SColorf(0.5f, 0.5f, 0.5f), 500);
+	//sceneManager->addLightSceneNode(0, core::vector3df(0, 200, 0), video::SColorf(0.2f, 0.2f, 0.2f), 500);
+	//sceneManager->addLightSceneNode(0, core::vector3df(200, 200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
+	//sceneManager->addLightSceneNode(0, core::vector3df(200, -200, -200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
+	//sceneManager->addLightSceneNode(0, core::vector3df(-200, 200, 200), video::SColorf(1.0f, 1.0f, 1.0f), 2000);
+	sceneManager->setAmbientLight(video::SColorf(0.5f, 0.5f, 0.5f));
+	//sceneManager->setAmbientLight(video::SColorf(1.0f, 1.0f, 1.0f));
+	
 	//Setting the Affector and the testData will change the render parametres.
 	matrix4* viewProjectionMatrixAffector = new matrix4();
 	viewProjectionMatrixAffector->buildCameraLookAtMatrixLH(vector3df(0, 0, 0), vector3df(0, 0, 10), vector3df(0, 1, 0));
-
+	
 	ICameraSceneNode* currentCamera = sceneManager->addCameraSceneNode();
-	// currentCamera->setViewMatrixAffector(*viewProjectionMatrixAffector);
-	currentCamera->setViewMatrixAffector(*obliqueMatrixList->getViewMatrixByPixel(0, 19));
-	currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(0, 19), true);
+
+	if (initialParametres->isLightField)
+	{		
+		// currentCamera->setViewMatrixAffector(*viewProjectionMatrixAffector);
+		currentCamera->setViewMatrixAffector(*obliqueMatrixList->getViewMatrixByPixel(0, 0));
+		currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(0, 0), true);
+	}
+	else
+	{	
+		//matrix4* viewMatrixAffector = new matrix4();
+		//matrix4* projectionMatrixAffector = new matrix4();
+		//viewMatrixAffector->buildCameraLookAtMatrixLH(vector3df(0, 0, 0), vector3df(0, 0, 10), vector3df(0, 1, 0));
+		//projectionMatrixAffector->buildProjectionMatrixPerspectiveFovLH(
+		//	PI*initialParametres->virtualCameraFOV / 180,
+		//	(float)(initialParametres->widthOfRenderzoneByPixel)/(float)(initialParametres->heightOfRenderzoneByPixel),
+		//	0,
+		//	1000
+		//	);
+		//
+		//currentCamera->setProjectionMatrix();
+
+		currentCamera->setPosition(
+			core::vector3df(
+				initialParametres->virtualCameraPosX / initialParametres->heightOfRenderzoneBymm * 2,
+				initialParametres->virtualCameraPosY / initialParametres->heightOfRenderzoneBymm * 2,
+				initialParametres->virtualCameraPosZ / initialParametres->heightOfRenderzoneBymm * 2
+				)
+			);
+		currentCamera->setFOV(PI*initialParametres->virtualCameraFOV / 180);
+		currentCamera->setUpVector(core::vector3df(0, 1, 0));
+		currentCamera->setTarget(core::vector3df(0, 0, 0));
+		currentCamera->setAspectRatio((float)(initialParametres->widthOfRenderzoneByPixel) / (float)(initialParametres->heightOfRenderzoneByPixel));
+	}
+
+
 	//===========================================================================================================================
 	//===========================================================================================================================
 	//===========================================================================================================================
@@ -206,66 +270,86 @@ int main()
 	// glMatrixMode(GL_MODELVIEW);
 	// glLoadIdentity();
 	glEnable(GL_STENCIL_TEST);
-
-
+	
 
 	//Decide if there is a simulator.
-	static PlaneSimulator *planeSimulator = new PlaneSimulator(
-		vector3df(0, 1, -3),
-		initialParametres->widthOfRenderzoneByPixel,
-		initialParametres->heightOfRenderzoneByPixel,
-		initialParametres->widthOfSubimageByPixel,
-		initialParametres->heightOfSubimageByPixel,
-		initialParametres->widthOfSubimageBymm,
-		initialParametres->heightOfSubimageBymm,
-		initialParametres->thicknessOfTransparentMaterialBetweenDevices,
-		initialParametres->refractionIndexOfTransparentMaterial,
-		2,
-		2
-		);
+	//static PlaneSimulator *planeSimulator = new PlaneSimulator(
+	//	vector3df(0, 1, -3),
+	//	initialParametres->widthOfRenderzoneByPixel,
+	//	initialParametres->heightOfRenderzoneByPixel,
+	//	initialParametres->widthOfSubimageByPixel,
+	//	initialParametres->heightOfSubimageByPixel,
+	//	initialParametres->widthOfSubimageBymm,
+	//	initialParametres->heightOfSubimageBymm,
+	//	initialParametres->thicknessOfTransparentMaterialBetweenDevices,
+	//	initialParametres->refractionIndexOfTransparentMaterial,
+	//	2,
+	//	2
+	//	);
 
 	while (device->run())
 	{
-		//===================================================================================================
-		//===================================================================================================
-		//===================================================================================================
-		videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, SColor(255, 0, 0, 0));//If it is SColor(0), the background will be transparent
-		videoDriver->setRenderTargetEx(renderTargetAllSubimages, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(255, 0, 0, 0));
-
-		for (int xInSubimageByPixel = 0; xInSubimageByPixel < initialParametres->widthOfSubimageByPixel; xInSubimageByPixel++)
+		//Update the stencil buffer to prepare for next step===================================================================================================
+		videoDriver->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, SColor(255, initialParametres->backgroundColorR, initialParametres->backgroundColorG, initialParametres->backgroundColorB));//If it is SColor(0), the background will be transparent
+		videoDriver->setRenderTargetEx(renderTargetAllSubimages, video::ECBF_COLOR | video::ECBF_DEPTH, SColor(255, initialParametres->backgroundColorR, initialParametres->backgroundColorG, initialParametres->backgroundColorB));
+		
+		if (initialParametres->isLightField)
 		{
-			for (int yInSubimageByPixel = 0; yInSubimageByPixel < initialParametres->heightOfSubimageByPixel; yInSubimageByPixel++)
+			for (int xInSubimageByPixel = 0; xInSubimageByPixel < initialParametres->widthOfSubimageByPixel; xInSubimageByPixel++)
 			{
-				glClearStencil(0);
-				glClear(GL_STENCIL_BUFFER_BIT);
-				glStencilFunc(GL_NEVER, 0x1, 0x1);
-				glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
-				//set part of the stencil buffer by drawing. It is strange that I can only draw the rects by the methods provided by irrlicht.
-				for (int xSubimageCount = 0; xSubimageCount < initialParametres->xSubimageCountMax; xSubimageCount++)
+				for (int yInSubimageByPixel = 0; yInSubimageByPixel < initialParametres->heightOfSubimageByPixel; yInSubimageByPixel++)
 				{
-					for (int ySubimageCount = 0; ySubimageCount < initialParametres->ySubimageCountMax; ySubimageCount++)
+					glClearStencil(0);
+					glClear(GL_STENCIL_BUFFER_BIT);
+					glStencilFunc(GL_NEVER, 0xf, 0xf);
+					glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+					//set part of the stencil buffer by drawing. It is strange that I can only draw the rects by the methods provided by irrlicht.
+					for (int xSubimageCount = 0; xSubimageCount < initialParametres->xSubimageCountMax; xSubimageCount++)
 					{
-						videoDriver->draw2DRectangle(
-							video::SColor(255, 255, 255, 255),
-							core::rect<s32>(
-								(initialParametres->widthOfSubimageByPixel) * xSubimageCount + xInSubimageByPixel,
-								(initialParametres->heightOfSubimageByPixel) * ySubimageCount + yInSubimageByPixel,
-								(initialParametres->widthOfSubimageByPixel) * xSubimageCount + xInSubimageByPixel + 1,
-								(initialParametres->heightOfSubimageByPixel) * ySubimageCount + yInSubimageByPixel + 1
-								)
-							);
+						for (int ySubimageCount = 0; ySubimageCount < initialParametres->ySubimageCountMax; ySubimageCount++)
+						{
+							videoDriver->draw2DRectangle(
+								video::SColor(255,
+									255 - initialParametres->backgroundColorR,
+									255 - initialParametres->backgroundColorG,
+									255 - initialParametres->backgroundColorB),
+								core::rect<s32>(
+									(initialParametres->widthOfSubimageByPixel) * xSubimageCount + xInSubimageByPixel,
+									(initialParametres->heightOfSubimageByPixel) * ySubimageCount + yInSubimageByPixel,
+									(initialParametres->widthOfSubimageByPixel) * xSubimageCount + xInSubimageByPixel + 1,
+									(initialParametres->heightOfSubimageByPixel) * ySubimageCount + yInSubimageByPixel + 1
+									)
+								);
+						}
 					}
+					glStencilFunc(GL_EQUAL, 0xf, 0xf);
+					glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+					//Draw for area masked by current stencil buffer
+					currentCamera->setViewMatrixAffector(*obliqueMatrixList->getViewMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel));
+					currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
+					sceneManager->drawAll();
 				}
-				glStencilFunc(GL_EQUAL, 0x1, 0x1);
-				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-				currentCamera->setViewMatrixAffector(*obliqueMatrixList->getViewMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel));
-				currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
-				sceneManager->drawAll();
 			}
+		}
+		else
+		{
+			glDisable(GL_STENCIL_TEST);
+			
+			//currentCamera->setPosition(core::vector3df(initialParametres->virtualCameraPosX, initialParametres->virtualCameraPosY, initialParametres->virtualCameraPosZ));
+			//currentCamera->setFOV(PI*initialParametres->virtualCameraFOV/180);
+			//currentCamera->setUpVector(core::vector3df(0, 1, 0));
+			//currentCamera->setTarget(core::vector3df(0, 0, 0));
+
+			//currentCamera->setProjectionMatrix(*obliqueMatrixList->getProjectionMatrixByPixel(xInSubimageByPixel, yInSubimageByPixel), true);
+
+			sceneManager->drawAll();
+
 		}
 		//===================================================================================================
 		glDisable(GL_STENCIL_TEST);
 		//===================================================================================================
+		if (initialParametres->isAimmingAssistantEnabled)
+		{
 		for (int leftToRightCount = 0; leftToRightCount < initialParametres->xSubimageCountMax; leftToRightCount++)
 		{
 			videoDriver->draw2DRectangle(
@@ -287,108 +371,140 @@ int main()
 					)
 				);
 
-			if (initialParametres->widthOfSubimageByPixel % 2 == 0)
-			{
-				videoDriver->draw2DRectangle(
-					SColor(255, 255, 255, 255),
-					core::rect<s32>(
-						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel,
-						(0.5 - 0.05) * initialParametres->heightOfSubimageByPixel,
-						(leftToRightCount + 0.5 + 0.0) * initialParametres->widthOfSubimageByPixel,
-						(0.5 + 0.0) * initialParametres->heightOfSubimageByPixel
-						)
-					);
-				videoDriver->draw2DRectangle(
-					SColor(255, 255, 255, 255),
-					core::rect<s32>(
-						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel,
-						(initialParametres->ySubimageCountMax - 0.5 - 0.05) * initialParametres->heightOfSubimageByPixel,
-						(leftToRightCount + 0.5 + 0.0) * initialParametres->widthOfSubimageByPixel,
-						(initialParametres->ySubimageCountMax - 0.5 + 0.0) * initialParametres->heightOfSubimageByPixel
-						)
-					);
-			}
-			else
-			{
-				videoDriver->draw2DRectangle(
-					SColor(255, 255, 255, 255),
-					core::rect<s32>(
-						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel + 1,
-						(0.5 - 0.05) * initialParametres->heightOfSubimageByPixel + 1,
-						(leftToRightCount + 0.5 + 0.05) * initialParametres->widthOfSubimageByPixel,
-						(0.5 + 0.05) * initialParametres->heightOfSubimageByPixel
-						)
-					);
-				videoDriver->draw2DRectangle(
-					SColor(255, 255, 255, 255),
-					core::rect<s32>(
-						(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel + 1,
-						(initialParametres->ySubimageCountMax + 0.5 - 0.05) * initialParametres->heightOfSubimageByPixel + 1,
-						(leftToRightCount + 0.5 + 0.05) * initialParametres->widthOfSubimageByPixel,
-						(initialParametres->ySubimageCountMax + 0.5 + 0.05) * initialParametres->heightOfSubimageByPixel
-						)
-					);
-			}
+				if (initialParametres->widthOfSubimageByPixel % 2 == 0)
+				{
+					videoDriver->draw2DRectangle(
+						SColor(255, 255, 255, 255),
+						core::rect<s32>(
+							(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel,
+							(0.5 - 0.05) * initialParametres->heightOfSubimageByPixel,
+							(leftToRightCount + 0.5 + 0.0) * initialParametres->widthOfSubimageByPixel,
+							(0.5 + 0.0) * initialParametres->heightOfSubimageByPixel
+							)
+						);
+					videoDriver->draw2DRectangle(
+						SColor(255, 255, 255, 255),
+						core::rect<s32>(
+							(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel,
+							(initialParametres->ySubimageCountMax - 0.5 - 0.05) * initialParametres->heightOfSubimageByPixel,
+							(leftToRightCount + 0.5 + 0.0) * initialParametres->widthOfSubimageByPixel,
+							(initialParametres->ySubimageCountMax - 0.5 + 0.0) * initialParametres->heightOfSubimageByPixel
+							)
+						);
+				}
+				else
+				{
+					videoDriver->draw2DRectangle(
+						SColor(255, 255, 255, 255),
+						core::rect<s32>(
+							(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel + 1,
+							(0.5 - 0.05) * initialParametres->heightOfSubimageByPixel + 1,
+							(leftToRightCount + 0.5 + 0.05) * initialParametres->widthOfSubimageByPixel,
+							(0.5 + 0.05) * initialParametres->heightOfSubimageByPixel
+							)
+						);
+					videoDriver->draw2DRectangle(
+						SColor(255, 255, 255, 255),
+						core::rect<s32>(
+							(leftToRightCount + 0.5 - 0.05) * initialParametres->widthOfSubimageByPixel + 1,
+							(initialParametres->ySubimageCountMax + 0.5 - 0.05) * initialParametres->heightOfSubimageByPixel + 1,
+							(leftToRightCount + 0.5 + 0.05) * initialParametres->widthOfSubimageByPixel,
+							(initialParametres->ySubimageCountMax + 0.5 + 0.05) * initialParametres->heightOfSubimageByPixel
+							)
+						);
+				}
 
+			}
 		}
 		//===================================================================================================
 		//===================================================================================================
 		videoDriver->setRenderTargetEx(0, 0, SColor(0));
+		
+		//Draw the rendered texture to the screen
+		videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(initialParametres->xOffsetByPixel, initialParametres->yOffsetByPixel),
+		/*videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(0, 0),*/
+			core::rect<s32>(
+				0,
+				0,
+				initialParametres->widthOfRenderzoneByPixel,
+				initialParametres->heightOfRenderzoneByPixel
+				),
+			0,
+			video::SColor(255,
+				255 - initialParametres->backgroundColorR,
+				255 - initialParametres->backgroundColorG,
+				255 - initialParametres->backgroundColorB), true);
 
-		if (initialParametres->isSimulating)
+		//Save the rendering result to a png file.
+		if (initialParametres->isSingleFrameRenderingAndQuitMode)
 		{
-			for (int xSubimageCount = 0; xSubimageCount < initialParametres->xSubimageCountMax; xSubimageCount++)
-			{
-				for (int ySubimageCount = 0; ySubimageCount < initialParametres->ySubimageCountMax; ySubimageCount++)
-				{
-					//videoDriver->draw2DRectangle(
-					//	video::SColor(255, 255, 255, 255),
-					//	core::rect<s32>(
-					//		(initialParametres->widthOfSubimageByPixel) * (xSubimageCount + 0.5) - 1,
-					//		(initialParametres->heightOfSubimageByPixel) * (ySubimageCount + 0.5) - 1,
-					//		(initialParametres->widthOfSubimageByPixel) * (xSubimageCount + 0.5) + 1,
-					//		(initialParametres->heightOfSubimageByPixel) * (ySubimageCount + 0.5) +1
-					//		)
-					//	);
-					//videoDriver->draw2DRectangle(
-					//	video::SColor(255, 0, 0, 0),
-					//	core::rect<s32>(
-					//		planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).X,
-					//		planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).Y,
-					//		planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).X + 2,
-					//		planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).Y + 2
-					//		)
-					//	);
-					videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(((xSubimageCount + 0.5) * initialParametres->widthOfSubimageByPixel - 1), ((ySubimageCount + 0.5) * initialParametres->heightOfSubimageByPixel - 1)),
-						core::rect<s32>(
-							planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).X,
-							planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).Y,
-							planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).X + 2,
-							planeSimulator->getCoorinatesInSubimage(xSubimageCount, ySubimageCount).Y + 2
-							),
-						0,
-						video::SColor(255, 255, 255, 255), true);
-				}
-			}
-			guiEnvironment->drawAll();
-		}
-		else
-		{
+			video::IRenderTarget* renderTargetToSave = 0;
+			video::ITexture* renderTargetTexToSave = 0;
+			//scene::ICameraSceneNode* fixedCam = 0;
+			renderTargetTexToSave = 
+				videoDriver->addRenderTargetTexture(
+					core::dimension2d<u32>(initialParametres->widthOfRenderzoneByPixel, initialParametres->heightOfRenderzoneByPixel), 
+					"RTT1", video::ECF_A8R8G8B8);
+			video::ITexture* renderTargetDepthToSave = 
+				videoDriver->addRenderTargetTexture(
+					core::dimension2d<u32>(initialParametres->widthOfRenderzoneByPixel, initialParametres->heightOfRenderzoneByPixel), 
+					"DepthStencil", video::ECF_D24S8);
+
+			renderTargetToSave = videoDriver->addRenderTarget();
+			renderTargetToSave->setTexture(renderTargetTexToSave, renderTargetDepthToSave);
+
+			videoDriver->setRenderTargetEx(renderTargetToSave, 
+				video::ECBF_COLOR | video::ECBF_DEPTH, 
+				SColor(255, 
+					initialParametres->backgroundColorR, 
+					initialParametres->backgroundColorG, 
+					initialParametres->backgroundColorB));
+
 			videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(initialParametres->xOffsetByPixel, initialParametres->yOffsetByPixel),
-			//videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(0, 0),
+				/*videoDriver->draw2DImage(renderTargetTex, core::position2d<s32>(0, 0),*/
 				core::rect<s32>(
 					0,
 					0,
-					initialParametres->widthOfRenderzoneByPixel,
-					initialParametres->heightOfRenderzoneByPixel
+					initialParametres->widthOfRenderzoneByPixel - initialParametres->xOffsetByPixel,
+					initialParametres->heightOfRenderzoneByPixel - initialParametres->yOffsetByPixel
 					),
 				0,
-				video::SColor(255, 255, 255, 255), true);
-		}
+				video::SColor(255,
+					255 - initialParametres->backgroundColorR,
+					255 - initialParametres->backgroundColorG,
+					255 - initialParametres->backgroundColorB), true);
 
-		if (initialParametres->isSingleFrameRenderingAndQuitMode)
-		{
-			savetex(renderTargetTex, "SingleFrameRenderingResult.png", videoDriver);
+			std::string filename = "SFR";
+			if (initialParametres->isLightField) filename += "-LF";
+			filename += "-" + to_string(initialParametres->widthOfRenderzoneByPixel) + "-" + to_string(initialParametres->heightOfRenderzoneByPixel);
+			filename += "-Elemental-" + to_string(initialParametres->widthOfSubimageByPixel) + "-" + to_string(initialParametres->heightOfSubimageByPixel);
+			if (initialParametres->isMeshOneEnabled)
+			{
+				filename += "-1";
+			}
+			else
+			{
+				filename += "-0";
+			}
+			if (initialParametres->isMeshTwoEnabled)
+			{
+				filename += "1";
+			}
+			else
+			{
+				filename += "0";
+			}
+			if (initialParametres->isMeshThreeEnabled)
+			{
+				filename += "1";
+			}
+			else
+			{
+				filename += "0";
+			}
+
+			filename += ".png";
+			savetex(renderTargetTexToSave, filename, videoDriver);
 			break;
 		}
 
